@@ -21,7 +21,7 @@ func ExportTranscript(path string, list []domain.Enrollment) error {
 	_ = w.Write([]string{"Student", "Course", "Grade"})
 	for _, e := range list {
 		grade, _ := e.Grade(e)
-		_ = w.Write([]string{e.Student.Name(), e.Course.Title, grade})
+		_ = w.Write([]string{e.Student.Name(), e.Course.Name, grade})
 	}
 	return w.Error()
 }

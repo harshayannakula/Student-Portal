@@ -6,7 +6,7 @@ type CourseResult struct {
 	CourseName string          `json:"course_name"`
 	Grade      AlphabeticGrade `json:"grade"`
 	Semester   int             `json:"semester"`
-	Credits    int             `json:"credits"`
+	Credits    float64         `json:"credits"`
 }
 
 func NewCourseResult(student_id int, course_id int, courseName string, grade AlphabeticGrade, semester int, credits float64) CourseResult {

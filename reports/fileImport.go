@@ -8,6 +8,11 @@ import (
 	"os"
 )
 
+type AcademicRecordGenerator struct { // Here i have added (ar *AcademicRecordGenerator to try to map it with GPAReportGenerator)
+	calculator *domain.AcademicRecord
+	students   []domain.StudentRecord
+}
+
 type courseResultData struct {
 	StudentID  int     `json:"student_id"`
 	CourseID   int     `json:"course_id"`
@@ -40,7 +45,7 @@ func parseGrade(gradeStr string) (domain.AlphabeticGrade, error) {
 	return domain.F, fmt.Errorf("invalid grade: %s", gradeStr)
 }
 
-func LoadCourses(regis *domain.Registrar) []domain.Course {
+func LoadCourses(regis *domain.Registrar) {
 	var coursesData []courseData
 	data, err := os.ReadFile("courses.json")
 	if err != nil {
@@ -53,9 +58,8 @@ func LoadCourses(regis *domain.Registrar) []domain.Course {
 	}
 
 	for _, course := range coursesData {
-		regis.AddCourse(course)
+		regis.AddCourse(domain.NewCourse(course.ID, course.Name))
 	}
-	return courseMap
 }
 
 func LoadCourseResults() []domain.CourseResult {
@@ -83,9 +87,9 @@ func LoadCourseResults() []domain.CourseResult {
 	return results
 }
 
-func GetAtRiskStudents() []domain.StudentRecord {
+func (ar *AcademicRecordGenerator) GetAtRiskStudents() []domain.StudentRecord { // Here i have added (ar *AcademicRecordGenerator to try to map it with GPAReportGenerator)
 	var atRisk []domain.StudentRecord
-	for _, student := range grg.students {
+	for _, student := range ar.students {
 		if student.Status == "At Risk" {
 			atRisk = append(atRisk, student)
 		}
@@ -93,9 +97,9 @@ func GetAtRiskStudents() []domain.StudentRecord {
 	return atRisk
 }
 
-func GetDeanListStudents() []domain.StudentRecord {
+func (ar *AcademicRecordGenerator) GetDeanListStudents() []domain.StudentRecord { // Here i have added (ar *AcademicRecordGenerator to try to map it with GPAReportGenerator)
 	var deanList []domain.StudentRecord
-	for _, student := range grg.students {
+	for _, student := range ar.students {
 		if student.Status == "Dean's List" {
 			deanList = append(deanList, student)
 		}
