@@ -1,52 +1,27 @@
 package main
 
 import (
+	"fmt"
 	"oops/main/domain"
-	"oops/main/export"
 	"oops/main/reports"
 )
 
+var courseResults []domain.CourseResult
+
 func main() {
-	studentRegister := domain.StudentRegister{}
-	studentRegister.LoadStudents()
-	studentRegister.Display()
+	regitrar := domain.Registrar{}
 
-	resultregister := domain.ResultRegister{}
-	resultregister.SetResults(reports.LoadResultsForStudents(studentRegister.Students))
-	resultregister.Display()
+	regitrar.LoadCourses()
+	regitrar.DisplayCourses()
 
-	freqMap := domain.CountGradeFrequencies(resultregister.Results())
-	export.PrintHorizontalBarGraph(freqMap)
-	export.ExportGPATrend(freqMap)
+	regitrar.LoadStudents()
+	regitrar.DisplayStudents()
+	
+	courseResults = reports.LoadCourseResults()
 
-  
-	// ------------ Boot Objects ------------
-	/*
-	alice := domain.NewStudent(1, "Alice Uncle")
-		core := domain.NewCourse(101, "Intro to Go")
-		lab := domain.NewCourse(202, "Go Networking lab")
+	fmt.Println("======================")
+	fmt.Println()
 
-		reg := &domain.Registrar{}
-		reg.AddStudent(alice)
-		reg.AddCourse(core)
-		reg.AddCourse(lab)
-
-		// Initial grading policies
-		reg.Enroll(domain.NewEnrollment(alice, core, domain.PercentageGrader{}, 0.91))
-		reg.Enroll(domain.NewEnrollment(alice, lab, domain.PassFailGrader{PassMark: 0.7}, 0.65))
-
-
-		// Runtime policy change
-		reg.SetGrader(lab.Id, domain.PercentageGrader{})
-
-		// Prints
-		for _, e := range reg.Enrollments() {
-			fmt.Println(e)
-		}
-
-		// Persistence
-		if err := export.ExportTranscript("transcript.csv", reg.Enrollments()); err != nil {
-			fmt.Println("CSV error: ", err)
-		}
-	*/
+	fmt.Print(courseResults)
 }
+

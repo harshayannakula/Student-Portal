@@ -22,12 +22,6 @@ type courseResultData struct {
 	Credits    float64 `json:"credits"`
 }
 
-type courseData struct {
-	ID      int     `json:"id"`
-	Name    string  `json:"name"`
-	Credits float64 `json:"credits"`
-}
-
 func parseGrade(gradeStr string) (domain.AlphabeticGrade, error) {
 	gradeMap := map[string]domain.AlphabeticGrade{
 		"O":  domain.O,
@@ -43,23 +37,6 @@ func parseGrade(gradeStr string) (domain.AlphabeticGrade, error) {
 		return grade, nil
 	}
 	return domain.F, fmt.Errorf("invalid grade: %s", gradeStr)
-}
-
-func LoadCourses(regis *domain.Registrar) {
-	var coursesData []courseData
-	data, err := os.ReadFile("courses.json")
-	if err != nil {
-		log.Fatal("Failed to read courses.json:", err)
-	}
-
-	err = json.Unmarshal(data, &coursesData)
-	if err != nil {
-		log.Fatal("Failed to unmarshal courses:", err)
-	}
-
-	for _, course := range coursesData {
-		regis.AddCourse(domain.NewCourse(course.ID, course.Name))
-	}
 }
 
 func LoadCourseResults() []domain.CourseResult {
