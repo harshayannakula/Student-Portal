@@ -6,17 +6,27 @@ type Registrar struct {
 	enrollments []Enrollment
 }
 
-func (r *Registrar) AddStudent(s Student) { r.students = append(r.students, s) }
-func (r *Registrar) AddCourse(c Course)   { r.courses = append(r.courses, c) }
+func (r *Registrar) AddStudent(s Student) {
+	r.students = append(r.students, s)
+}
 
-func (r *Registrar) Enroll(e Enrollment) { r.enrollments = append(r.enrollments, e) }
+func (r *Registrar) AddCourse(c Course) {
+	r.courses = append(r.courses, c)
+}
 
-func (r *Registrar) SetGrader(courseID int, g Grader) {
+func (r *Registrar) Enroll(e Enrollment) {
+	r.enrollments = append(r.enrollments, e)
+}
+
+
+func (r *Registrar) SetGrader(courseID int, g Grader){
 	for i, e := range r.enrollments {
-		if e.Course.ID == courseID {
+		if e.Course.Id == courseID {
 			r.enrollments[i].Grader = g
 		}
 	}
 }
 
-func (r Registrar) Enrollments() []Enrollment { return r.enrollments }
+func (r *Registrar) Enrollments() []Enrollment {
+	return r.enrollments
+}

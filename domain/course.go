@@ -1,10 +1,10 @@
 package domain
 
 type Course struct {
-	ID   int
-	name string
+	Id   int
+	Name string
 }
 
-func NewCourse(id int, title string) Course {
-	return Course{ID: id, name: title}
+func NewCourse(id int, name string) Course {
+	return Course{Id: id, Name: name}
 }

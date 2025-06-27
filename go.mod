@@ -1,3 +1,3 @@
-module example.com/m/v3
+module oops/main
 
-go 1.24.4
+go 1.23.4
