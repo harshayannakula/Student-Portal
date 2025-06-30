@@ -1,6 +1,8 @@
-package domain
+package internal
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type Enrollment struct {
 	Student

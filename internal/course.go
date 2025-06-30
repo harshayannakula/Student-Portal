@@ -1,4 +1,4 @@
-package domain
+package internal
 
 type Course struct {
 	Id   int

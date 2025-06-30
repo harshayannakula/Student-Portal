@@ -1,4 +1,4 @@
-package domain
+package internal
 
 type AcademicRecord struct {
 	StudentId int                           `json:"student_id"`

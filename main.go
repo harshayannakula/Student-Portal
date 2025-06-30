@@ -2,14 +2,15 @@ package main
 
 import (
 	"fmt"
-	"oops/main/domain"
-	"oops/main/reports"
+	"oops/main/internal/students"
+	"oops/main/infrastructure/reports"
+	"oops/main/internal/admin"
 )
 
-var courseResults []domain.CourseResult
+var courseResults []students.CourseResult
 
 func main() {
-	regitrar := domain.Registrar{}
+	regitrar := admin.Registrar{}
 
 	regitrar.LoadCourses()
 	regitrar.DisplayCourses()
