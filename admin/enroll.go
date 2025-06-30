@@ -11,6 +11,16 @@ type Enrollment struct {
 	score float64
 }
 
+type Enroll struct {
+	Enrollment
+	attend []Attendance
+}
+
+func Updateattendance(e Enroll, a Attendance) Enroll {
+	e.attend = append(e.attend, a)
+	return e
+}
+
 type Teacherenrollment struct {
 	Teacher
 	Course
