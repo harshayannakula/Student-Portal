@@ -1,12 +1,23 @@
-package domain
+package admin
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type Enrollment struct {
 	Student
 	Course
 	Grader
 	score float64
+}
+
+type Teacherenrollment struct {
+	Teacher
+	Course
+}
+
+func NewTeacherenrollment(t Teacher, c Course) Teacherenrollment {
+	return Teacherenrollment{Teacher: t, Course: c}
 }
 
 func NewEnrollment(st Student, c Course, g Grader, score float64) Enrollment {

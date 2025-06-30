@@ -1,4 +1,4 @@
-package domain
+package students
 
 import (
 	"fmt"

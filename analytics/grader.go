@@ -1,4 +1,4 @@
-package domain
+package analytics
 
 import "fmt"
 
@@ -7,7 +7,6 @@ type Grader interface {
 }
 
 type PercentageGrader struct{}
-
 
 func (PercentageGrader) Grade(e Enrollment) (string, error) {
 	return fmt.Sprintf("%.1f%%", e.score*100), nil

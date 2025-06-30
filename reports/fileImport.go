@@ -1,10 +1,10 @@
 package reports
 
 import (
+	"/domain"
 	"encoding/json"
 	"fmt"
 	"log"
-	"oops/main/domain"
 	"os"
 )
 
@@ -64,7 +64,7 @@ func LoadCourseResults() []domain.CourseResult {
 	return results
 }
 
-func (ar *AcademicRecordGenerator) GetAtRiskStudents() []domain.StudentRecord { 
+func (ar *AcademicRecordGenerator) GetAtRiskStudents() []domain.StudentRecord {
 	var atRisk []domain.StudentRecord
 	for _, student := range ar.students {
 		if student.Status == "At Risk" {

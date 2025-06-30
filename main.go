@@ -16,7 +16,7 @@ func main() {
 
 	regitrar.LoadStudents()
 	regitrar.DisplayStudents()
-	
+
 	courseResults = reports.LoadCourseResults()
 
 	fmt.Println("======================")
@@ -24,4 +24,3 @@ func main() {
 
 	fmt.Print(courseResults)
 }
-
