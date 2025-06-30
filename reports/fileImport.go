@@ -64,7 +64,7 @@ func LoadCourseResults() []domain.CourseResult {
 	return results
 }
 
-func (ar *AcademicRecordGenerator) GetAtRiskStudents() []domain.StudentRecord { // Here i have added (ar *AcademicRecordGenerator to try to map it with GPAReportGenerator)
+func (ar *AcademicRecordGenerator) GetAtRiskStudents() []domain.StudentRecord { 
 	var atRisk []domain.StudentRecord
 	for _, student := range ar.students {
 		if student.Status == "At Risk" {
