@@ -1,14 +1,14 @@
-package export
+package infrastructure
 
 import (
 	"encoding/csv"
 	"fmt"
-	"oops/main/domain"
+	"oops/main/internal"
 	"os"
 	"strconv"
 )
 
-func ExportTranscript(path string, list []domain.Enrollment) error {
+func ExportTranscript(path string, list []internal.Enrollment) error {
 	file, err := os.Create(path)
 	if err != nil {
 		return err
@@ -26,9 +26,14 @@ func ExportTranscript(path string, list []domain.Enrollment) error {
 	return w.Error()
 }
 
-func ExportAtRiskStudents(path string, students []domain.StudentRecord) error {
-	var atRiskStudents []domain.StudentRecord
-	for _, student := range students {
+func hello(){
+	var atRiskStudents []internal.AcademicRecord
+	fmt.Print(atRiskStudents)
+}
+
+func ExportAtRiskStudents(path string, internal []internal.AcademicRecord) error {
+	var atRiskStudents []internal.AcademicRecord
+	for _, student := range internal {
 		if student.Status == "At Risk" {
 			atRiskStudents = append(atRiskStudents, student)
 		}
@@ -36,9 +41,9 @@ func ExportAtRiskStudents(path string, students []domain.StudentRecord) error {
 	return ExportSummaryReport(path, atRiskStudents)
 }
 
-func ExportDeanListStudents(path string, students []domain.StudentRecord) error {
+func ExportDeanListStudents(path string, internal []domain.StudentRecord) error {
 	var deanListStudents []domain.StudentRecord
-	for _, student := range students {
+	for _, student := range internal {
 		if student.Status == "Dean's List" {
 			deanListStudents = append(deanListStudents, student)
 		}
@@ -46,7 +51,7 @@ func ExportDeanListStudents(path string, students []domain.StudentRecord) error 
 	return ExportSummaryReport(path, deanListStudents)
 }
 
-func ExportSummaryReport(path string, students []domain.StudentRecord) error {
+func ExportSummaryReport(path string, internal []students.AcademicRecord) error {
 	file, err := os.Create(path)
 	if err != nil {
 		return err
@@ -61,7 +66,7 @@ func ExportSummaryReport(path string, students []domain.StudentRecord) error {
 		return err
 	}
 
-	for _, student := range students {
+	for _, student := range internal {
 		record := []string{
 			strconv.Itoa(student.Student.ID()),
 			student.Student.Name(),

@@ -1,9 +1,9 @@
-package domain
+package internal
 
 import (
 	"encoding/json"
-	"log"
 	"fmt"
+	"log"
 	"os"
 )
 

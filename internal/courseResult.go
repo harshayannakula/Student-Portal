@@ -1,4 +1,4 @@
-package domain
+package internal
 
 type CourseResult struct {
 	StudentId  int             `json:"student_id"`
