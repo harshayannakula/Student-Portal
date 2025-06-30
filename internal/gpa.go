@@ -39,3 +39,4 @@ func (gc *GPACalculator) DetermineStatus(overallGPA float64) string {
 	}
 	return "Normal"
 }
+//gpa
