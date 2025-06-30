@@ -17,6 +17,7 @@ type NewRegistrar struct {
 	Registrar
 	teacher    []Teacher
 	teachermap []Teacherenrollment
+	enroll     []Enrollnew
 }
 
 func (r *NewRegistrar) AddTeacher(t Teacher) {
@@ -37,6 +38,10 @@ func (r *Registrar) AddCourse(c Course) {
 
 func (r *Registrar) Enroll(e Enrollment) {
 	r.enrollments = append(r.enrollments, e)
+}
+
+func (r *NewRegistrar) Enrollnew(e Enrollnew) {
+	r.enroll = append(r.enroll, e)
 }
 
 func (r *Registrar) SetGrader(courseID int, g Grader) {

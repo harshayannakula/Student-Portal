@@ -11,14 +11,10 @@ type Enrollment struct {
 	score float64
 }
 
-type Enroll struct {
-	Enrollment
-	attend []Attendance
-}
-
-func Updateattendance(e Enroll, a Attendance) Enroll {
-	e.attend = append(e.attend, a)
-	return e
+type Enrollnew struct {
+	Enrollment              // Embedding Enrollment to include student, course, grader, and score
+	attend     []Attendance // Attendance records associated with the enrollment
+	Teacher                 // Embedding Teacher to associate with the enrollment
 }
 
 type Teacherenrollment struct {
@@ -32,6 +28,10 @@ func NewTeacherenrollment(t Teacher, c Course) Teacherenrollment {
 
 func NewEnrollment(st Student, c Course, g Grader, score float64) Enrollment {
 	return Enrollment{Student: st, Course: c, Grader: g, score: score}
+}
+
+func enrollnew(st Student, c Course, g Grader, score float64, att []Attendance, t Teacher) Enrollnew {
+	return Enrollnew{Enrollment: Enrollment{Student: st, Course: c, Grader: g, score: score}, attend: att}
 }
 
 func (e Enrollment) String() string {
