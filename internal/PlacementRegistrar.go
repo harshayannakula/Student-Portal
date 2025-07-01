@@ -71,3 +71,62 @@ func (pr *PlacementRegistrar) ApplicantByID(studentID int) (*Applicant, error) {
 	}
 	return nil, fmt.Errorf("applicant with id %d not found", studentID)
 }
+
+func (pr *PlacementRegistrar) CompanyByID(id int) (*Company, error) {
+	for i := range pr.companies {
+		if pr.companies[i].ID() == id {
+			return &pr.companies[i], nil
+		}
+	}
+	return nil, fmt.Errorf("company with found %d not found", id)
+}
+
+func (pr *PlacementRegistrar) DriveByID(companyID, driveID int) (*Drive, error) {
+	company, err := pr.CompanyByID(companyID)
+	if err != nil {
+		return nil, err
+	}
+
+	for i := range company.Drives() {
+		if company.Drives()[i].ID() == driveID {
+			drives := company.Drives()
+			return &drives[i], nil
+		}
+	}
+}
+func (pr *PlacementRegistrar) ApplyForDrive(studentID, companyID, driveID int) error {
+	applicant, err := pr.ApplicantByID(studentID)
+
+	if err != nil {
+		return fmt.Errorf("applicant not found: %v", err)
+	}
+	drive, err := pr.DriveByID(companyID, driveID)
+	if err != nil {
+		return err
+	}
+
+	if pr.HasApplied(studentID, driveID) { // todo
+		return fmt.Errorf("applicant applied already")
+	}
+
+	if !pr.checkEligibility(*applicant, drive.Eligibility()) { //todo
+		return fmt.Errorf("applicant is not meet the criteria ")
+	}
+
+	application := Application{
+		id:        len(pr.applicants) + 1,
+		Drive:     *drive,
+		Applicant: *applicant,
+		status:    Applied,
+	}
+
+	pr.applications = append(pr.applications, application)
+
+	for i := range pr.applicants {
+		if pr.applicants[i].ID() == studentID {
+			pr.applicants[i].AddDrivesAppliedFor(*drive)
+			break
+		}
+	}
+	return nil
+}
