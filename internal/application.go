@@ -16,3 +16,11 @@ type Application struct {
 	Applicant
 	status ApplicationStatus
 }
+
+func (app *Application) ID() int {
+	return app.id
+}
+
+func (app *Application) Status() ApplicationStatus {
+	return app.status
+}

@@ -5,6 +5,7 @@ import "fmt"
 type PlacementRegistrar struct {
 	companies    []Company
 	applications []Application
+	applicants   []Applicant
 }
 
 type ReportByStudent struct {
@@ -60,4 +61,13 @@ func (pr *PlacementRegistrar) AddDriveToCompany(companyID int, drive Drive) erro
 		}
 	}
 	return fmt.Errorf("company with id %d not found", companyID)
+}
+
+func (pr *PlacementRegistrar) ApplicantByID(studentID int) (*Applicant, error) {
+	for i := range pr.applicants {
+		if pr.applicants[i].ID() == studentID {
+			return &pr.applicants[i], nil
+		}
+	}
+	return nil, fmt.Errorf("applicant with id %d not found", studentID)
 }
