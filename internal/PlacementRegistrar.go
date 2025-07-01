@@ -93,6 +93,7 @@ func (pr *PlacementRegistrar) DriveByID(companyID, driveID int) (*Drive, error) 
 			return &drives[i], nil
 		}
 	}
+	return nil, fmt.Errorf("drive by id  %d and company with id %d not found", driveID, companyID)
 }
 func (pr *PlacementRegistrar) ApplyForDrive(studentID, companyID, driveID int) error {
 	applicant, err := pr.ApplicantByID(studentID)
@@ -105,11 +106,11 @@ func (pr *PlacementRegistrar) ApplyForDrive(studentID, companyID, driveID int) e
 		return err
 	}
 
-	if drive.HasApplied(studentID) { 
+	if drive.HasApplied(studentID) {
 		return fmt.Errorf("applicant applied already")
 	}
 
-	if !drive.eligibility.checkEligibility(applicant) { 
+	if !drive.eligibility.checkEligibility(applicant) {
 		return fmt.Errorf("applicant is not meet the criteria ")
 	}
 
