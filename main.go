@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"oops/main/infrastructure"
 	"oops/main/internal"
+	"time"
 )
 
 var courseResults []internal.CourseResult
