@@ -1,4 +1,4 @@
-package admin
+package internal
 
 import (
 	"fmt"
@@ -12,9 +12,9 @@ type Enrollment struct {
 }
 
 type Enrollnew struct {
-	Enrollment              // Embedding Enrollment to include student, course, grader, and score
-	attend     []Attendance // Attendance records associated with the enrollment
-	Teacher                 // Embedding Teacher to associate with the enrollment
+	Enrollment            // Embedding Enrollment to include student, course, grader, and score
+	attend     Attendance // Attendance records associated with the enrollment
+	Teacher               // Embedding Teacher to associate with the enrollment
 }
 
 type Teacherenrollment struct {
