@@ -2,22 +2,23 @@ package main
 
 import (
 	"fmt"
-	"oops/main/infrastructure"
-	"oops/main/internal"
+	"oops/main/infrastructure/reports"
+	"oops/main/internal/admin"
+	
 )
 
-var courseResults []internal.CourseResult
+var courseResults []students.CourseResult
 
 func main() {
-	registrar := internal.Registrar{}
+	regitrar := admin.Registrar{}
 
-	registrar.LoadCourses()
-	registrar.DisplayCourses()
+	regitrar.LoadCourses()
+	regitrar.DisplayCourses()
 
-	registrar.LoadStudents()
-	registrar.DisplayStudents()
+	regitrar.LoadStudents()
+	regitrar.DisplayStudents()
 
-	courseResults = infrastructure.LoadCourseResults()
+	courseResults = reports.LoadCourseResults()
 
 	fmt.Println("======================")
 	fmt.Println()
