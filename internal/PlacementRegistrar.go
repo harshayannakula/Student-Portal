@@ -22,10 +22,14 @@ type FullPlacementReport struct {
 	totalOffersByCatagory map[JobCategory]int
 }
 
+// TO-DO
 func (pr PlacementRegistrar) GenerateReportByStudent() ReportByStudent {
+
 	return ReportByStudent{}
+
 }
 
+// TO-DO
 func (pr PlacementRegistrar) GenerateFullReport() FullPlacementReport {
 	return FullPlacementReport{}
 }
