@@ -95,6 +95,7 @@ func (pr *PlacementRegistrar) DriveByID(companyID, driveID int) (*Drive, error) 
 	}
 	return nil, fmt.Errorf("drive by id  %d and company with id %d not found", driveID, companyID)
 }
+
 func (pr *PlacementRegistrar) ApplyForDrive(studentID, companyID, driveID int) error {
 	applicant, err := pr.ApplicantByID(studentID)
 
@@ -122,6 +123,7 @@ func (pr *PlacementRegistrar) ApplyForDrive(studentID, companyID, driveID int) e
 	}
 
 	pr.applications = append(pr.applications, application)
+	drive.AppendApplication(application)
 
 	for i := range pr.applicants {
 		if pr.applicants[i].ID() == studentID {

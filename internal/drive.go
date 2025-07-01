@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"fmt"
 	"time"
 )
 
@@ -16,7 +17,8 @@ const (
 )
 
 var JobCategoryStringMap = map[JobCategory]string{
-	Day:        "Day Company", Dream:      "Dream",
+	Day:        "Day Company", 
+	Dream:      "Dream",
 	SuperDream: "Super Dream",
 	Marquee:    "Marquee",
 }
@@ -46,6 +48,15 @@ func NewElegibility(minimumGPA float64) Eligibility {
 
 func NewDrive(startDate time.Time, endDate time.Time, roleName string, minimumGPA float64, ctc int, jobCategory JobCategory) Drive {
 	return Drive{id: nextID(), startDate: startDate, endDate: endDate, roleName: roleName, eligibility: NewElegibility(minimumGPA), ctc: ctc, jobCategory: jobCategory}
+}
+
+// Elegibility setters and Getters
+func (el Eligibility) Requirement() float64 {
+	return el.requirement
+}
+
+func (el Eligibility) ChangeRequirement(newReq float64) {
+	el.requirement = newReq
 }
 
 // Getters
@@ -82,35 +93,35 @@ func (dr Drive) Applications() []Application {
 }
 
 // Setters
-func (dr Drive) SetStartDate() time.Time {
-	return dr.startDate
+func (dr *Drive) SetStartDate( startDate  time.Time ) {
+	dr.startDate = startDate
 }
 
-func (dr Drive) SetEndDate() time.Time {
-	return dr.endDate
+func (dr *Drive) SetEndDate( endDate  time.Time ) {
+	dr.endDate = endDate
 }
 
-func (dr Drive) SetRoleName() string {
-	return dr.roleName
+func (dr *Drive) SetRoleName( roleName string)  {
+	dr.roleName = roleName
 }
 
-func (dr Drive) SetElegibility() Eligibility {
-	return dr.eligibility
+func (dr *Drive) SetElegibility( minimumGPA float64 )  {
+	dr.eligibility.ChangeRequirement(minimumGPA) 
 }
 
-func (dr Drive) SetCTC() int {
-	return dr.ctc
+func (dr *Drive) SetCTC(ctc int) {
+	dr.ctc = ctc
 }
 
-func (dr Drive) SetJobCategory() JobCategory {
-	return dr.jobCategory
+func (dr *Drive) SetJobCategory( jobCat JobCategory)  {
+	dr.jobCategory = jobCat
 }
 
 func (dr *Drive) AppendApplication(application Application) {
 	dr.applications = append(dr.applications, application)
 }
 
-// Functions
+// Drive Functions
 func (dr *Drive) HasApplied(StudentID int) bool {
 	for _, e := range(dr.applications) {
 		if e.Student.ID() == StudentID {
@@ -120,6 +131,14 @@ func (dr *Drive) HasApplied(StudentID int) bool {
 	return false
 }
 
+func (dr *Drive) GetApplicationByID(id int) (*Application, error) {
+	for _, e := range(dr.applications) {
+		if e.ID() == id {
+			return &e, nil
+		}
+	} 
+	return nil, fmt.Errorf("no such application for given id")
+} 
 
 //Elegibility functions
 func (el *Eligibility) checkEligibility(applicant *Applicant) bool {
