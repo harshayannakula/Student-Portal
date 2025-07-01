@@ -16,8 +16,7 @@ const (
 )
 
 var JobCategoryStringMap = map[JobCategory]string{
-	Day:        "Day Company",
-	Dream:      "Dream",
+	Day:        "Day Company", Dream:      "Dream",
 	SuperDream: "Super Dream",
 	Marquee:    "Marquee",
 }
@@ -27,7 +26,7 @@ func (jc JobCategory) String() string {
 }
 
 type Eligibility struct {
-	requirement int
+	requirement float64
 }
 
 type Drive struct {
@@ -41,11 +40,11 @@ type Drive struct {
 	applications []Application
 }
 
-func NewElegibility(minimumGPA int) Eligibility {
+func NewElegibility(minimumGPA float64) Eligibility {
 	return Eligibility{requirement: minimumGPA}
 }
 
-func NewDrive(startDate time.Time, endDate time.Time, roleName string, minimumGPA int, ctc int, jobCategory JobCategory) Drive {
+func NewDrive(startDate time.Time, endDate time.Time, roleName string, minimumGPA float64, ctc int, jobCategory JobCategory) Drive {
 	return Drive{id: nextID(), startDate: startDate, endDate: endDate, roleName: roleName, eligibility: NewElegibility(minimumGPA), ctc: ctc, jobCategory: jobCategory}
 }
 
@@ -109,4 +108,24 @@ func (dr Drive) SetJobCategory() JobCategory {
 
 func (dr *Drive) AppendApplication(application Application) {
 	dr.applications = append(dr.applications, application)
+}
+
+// Functions
+func (dr *Drive) HasApplied(StudentID int) bool {
+	for _, e := range(dr.applications) {
+		if e.Student.ID() == StudentID {
+			return true
+		}
+	} 
+	return false
+}
+
+
+//Elegibility functions
+func (el *Eligibility) checkEligibility(applicant *Applicant) bool {
+	if el.requirement > applicant.CGPA {
+		return false
+	} else {
+		return true
+	}
 }

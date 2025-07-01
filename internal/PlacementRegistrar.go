@@ -105,11 +105,11 @@ func (pr *PlacementRegistrar) ApplyForDrive(studentID, companyID, driveID int) e
 		return err
 	}
 
-	if pr.HasApplied(studentID, driveID) { // todo
+	if drive.HasApplied(studentID) { 
 		return fmt.Errorf("applicant applied already")
 	}
 
-	if !pr.checkEligibility(*applicant, drive.Eligibility()) { //todo
+	if !drive.eligibility.checkEligibility(applicant) { 
 		return fmt.Errorf("applicant is not meet the criteria ")
 	}
 

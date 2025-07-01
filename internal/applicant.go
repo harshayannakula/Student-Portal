@@ -2,7 +2,12 @@ package internal
 
 type Applicant struct {
 	Student
+	AcademicRecord
 	drivesAppliedFor []Drive
+}
+
+func NewApplicant(st Student, ar AcademicRecord) Applicant {
+	return Applicant{Student: st, AcademicRecord: ar}
 }
 
 func (a *Applicant) DrivesAppliedFor() []Drive {
@@ -16,3 +21,4 @@ func (a *Applicant) AddDrivesAppliedFor(drive Drive) {
 func (a *Applicant) SetDrivesAppliedFor(drives []Drive) {
 	a.drivesAppliedFor = drives
 }
+
