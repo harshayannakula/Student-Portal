@@ -1,7 +1,6 @@
 package internal
 
 import (
-	"fmt"
 	"time"
 )
 
@@ -27,15 +26,4 @@ type Drive struct {
 
 type Eligibility struct {
 	requirement int
-}
-
-func (pr *PlacementRegistrar) AddDriveToCompany(companyID int, drive Drive) error {
-	for i := range pr.companies {
-		if pr.companies[i].id == companyID {
-			pr.companies[i].drives = append(pr.companies[i].drives, drive)
-			return nil
-
-		}
-	}
-	return fmt.Errorf("company with id %d not found", companyID)
 }
