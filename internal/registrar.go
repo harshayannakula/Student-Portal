@@ -13,6 +13,21 @@ type Registrar struct {
 	enrollments []Enrollment
 }
 
+type NewRegistrar struct {
+	Registrar
+	teacher    []Teacher
+	teachermap []Teacherenrollment
+	enroll     []Enrollnew
+}
+
+func (r *NewRegistrar) AddTeacher(t Teacher) {
+	r.teacher = append(r.teacher, t)
+}
+
+func (r *NewRegistrar) AddTeacherenrollment(te Teacherenrollment) {
+	r.teachermap = append(r.teachermap, te)
+}
+
 func (r *Registrar) AddStudent(s Student) {
 	r.students = append(r.students, s)
 }
@@ -25,8 +40,11 @@ func (r *Registrar) Enroll(e Enrollment) {
 	r.enrollments = append(r.enrollments, e)
 }
 
+func (r *NewRegistrar) Enrollnew(e Enrollnew) {
+	r.enroll = append(r.enroll, e)
+}
 
-func (r *Registrar) SetGrader(courseID int, g Grader){
+func (r *Registrar) SetGrader(courseID int, g Grader) {
 	for i, e := range r.enrollments {
 		if e.Course.Id == courseID {
 			r.enrollments[i].Grader = g
@@ -38,16 +56,15 @@ func (r *Registrar) Enrollments() []Enrollment {
 	return r.enrollments
 }
 
-
-type StudentData struct{
-	ID int `json:"id"`
-	Name string `json:"name"`
+type StudentData struct {
+	ID   int    json:"id"
+	Name string json:"name"
 }
 
 type courseData struct {
-	ID      int     `json:"id"`
-	Name    string  `json:"title"`
-	Credits float64 `json:"credits"`
+	ID      int     json:"id"
+	Name    string  json:"title"
+	Credits float64 json:"credits"
 }
 
 func (regis *Registrar) LoadCourses() {
@@ -65,23 +82,22 @@ func (regis *Registrar) LoadCourses() {
 	}
 }
 
-
 func (r *Registrar) LoadStudents() {
-    var students []StudentData
-    data, err := os.ReadFile("students.json")
-    if err != nil {
-        log.Fatal("Failed to read students.json:", err)
-    }
-    
-    err = json.Unmarshal(data, &students)
-    if err != nil {
-        log.Fatal("Failed to unmarshal students:", err)
-    }
-    r.students = make([]Student, 0, len(students))
-    for _, sd := range students {
-	    student := NewStudent(sd.ID, sd.Name)
-	    r.AddStudent(student)
-    }
+	var students []StudentData
+	data, err := os.ReadFile("students.json")
+	if err != nil {
+		log.Fatal("Failed to read students.json:", err)
+	}
+
+	err = json.Unmarshal(data, &students)
+	if err != nil {
+		log.Fatal("Failed to unmarshal students:", err)
+	}
+	r.students = make([]Student, 0, len(students))
+	for _, sd := range students {
+		student := NewStudent(sd.ID, sd.Name)
+		r.AddStudent(student)
+	}
 }
 
 func (r *Registrar) DisplayStudents() {

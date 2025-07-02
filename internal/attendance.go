@@ -1,20 +1,28 @@
 package internal
 
 import (
-	"Student-Portal/Student"
 	"time"
 )
 
-type AttendanceService struct {
-	Records []Student.AttendanceRecord
+type Attendance struct {
+	Records map[time.Time]bool
 }
 
-func (a *AttendanceService) MarkAttendance(studentID, sessionID string, present bool) {
-	record := Student.AttendanceRecord{
-		StudentID: studentID,
-		SessionID: sessionID,
-		Date:      time.Now(),
-		Present:   present,
+func markAttendance(attendance *Attendance, date time.Time, present bool) {
+	if attendance.Records == nil {
+		attendance.Records = make(map[time.Time]bool)
 	}
-	a.Records = append(a.Records, record)
+	attendance.Records[date] = present
+}
+
+// need to check time data type parameter passing
+func Giveattendence(r *NewRegistrar, courseID int, studentID int, TeacherID string, attendence bool, time time.Time) {
+	for _, e := range r.enroll {
+		if e.Course.Id == courseID && e.Student.ID() == studentID && e.Teacher.TID() == TeacherID {
+			//r.enroll[i].Attendence = attendence
+			markAttendance(&e.attend, time, attendence)
+			//check
+			return
+		}
+	}
 }
