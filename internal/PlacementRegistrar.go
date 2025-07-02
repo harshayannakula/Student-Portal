@@ -2,8 +2,6 @@ package internal
 
 import (
 	"fmt"
-
-	"golang.org/x/text/cases"
 )
 
 type PlacementRegistrar struct {
@@ -52,7 +50,7 @@ func (pr PlacementRegistrar) GenerateReportByStudent() []ReportByStudent {
 
 func (pr PlacementRegistrar) GenerateFullReport() FullPlacementReport {
 	var report FullPlacementReport
-	var allOffersBycatagory map[JobCategory]int
+	allOffersBycatagory := make( map[JobCategory]int)
 	report.allComapanies = pr.companies
 	report.totalComapanies = len(report.allComapanies)
 	for _, a := range(pr.applications){
@@ -75,15 +73,13 @@ func (pr PlacementRegistrar) GenerateFullReport() FullPlacementReport {
 		}
 	}
 	report.totalOffersByCatagory = allOffersBycatagory
-	return FullPlacementReport{}
+	return report
 }
 
 func (pr PlacementRegistrar) AllDrives() []Drive {
 	var alldrives []Drive
 	for _, c := range pr.companies {
-		for _, d := range c.drives {
-			alldrives = append(alldrives, d)
-		}
+		alldrives = append(alldrives, c.Drives()...)
 	}
 	return alldrives
 }
@@ -195,7 +191,7 @@ func (pr *PlacementRegistrar) ApplyForDrive(studentID, companyID, driveID int) e
 func (pr *PlacementRegistrar) UpdateApplicationStatus(studentID, driverID int, newStatus ApplicationStatus) error {
 	for i := range pr.applications {
 		app := &pr.applications[i]
-		if app.Applicant.Student.id == studentID && app.driveId == driverID {
+		if app.Student.id == studentID && app.driveId == driverID {
 			app.status = newStatus
 			return nil
 		}
