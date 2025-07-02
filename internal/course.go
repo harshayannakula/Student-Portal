@@ -1,4 +1,4 @@
-package admin
+package internal
 
 type Course struct {
 	Id   int

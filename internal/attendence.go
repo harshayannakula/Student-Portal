@@ -21,7 +21,6 @@ func Giveattendence(r *NewRegistrar, courseID int, studentID int, TeacherID stri
 		if e.Course.Id == courseID && e.Student.ID() == studentID && e.Teacher.TID() == TeacherID {
 			//r.enroll[i].Attendence = attendence
 			markAttendance(&e.attend, time, attendence)
-			//check
 			return
 		}
 	}

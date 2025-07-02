@@ -30,8 +30,13 @@ func NewEnrollment(st Student, c Course, g Grader, score float64) Enrollment {
 	return Enrollment{Student: st, Course: c, Grader: g, score: score}
 }
 
-func enrollnew(st Student, c Course, g Grader, score float64, att []Attendance, t Teacher) Enrollnew {
-	return Enrollnew{Enrollment: Enrollment{Student: st, Course: c, Grader: g, score: score}, attend: att}
+// made enrool function to check with teacher maping with course (chanes may be checking in main while adding or passing teacher map from rigister to enroll function)
+func Enroll(st Student, c Course, g Grader, score float64, att []Attendance, t Teacher) Enrollnew {
+	for _, te := range teachermap {
+		if te.Teacher.TID() == t.TID() && te.Course.Id == c.Id {
+			return Enrollnew{Enrollment: Enrollment{Student: st, Course: c, Grader: g, score: score}, attend: Attendance{Records: att}, Teacher: t}
+		}
+	}
 }
 
 func (e Enrollment) String() string {

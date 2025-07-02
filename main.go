@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"oops/main/internal/students"
 	"oops/main/infrastructure/reports"
 	"oops/main/internal/admin"
+	"oops/main/internal/students"
 )
 
 var courseResults []students.CourseResult
@@ -17,7 +17,7 @@ func main() {
 
 	regitrar.LoadStudents()
 	regitrar.DisplayStudents()
-	
+
 	courseResults = reports.LoadCourseResults()
 
 	fmt.Println("======================")
@@ -25,4 +25,3 @@ func main() {
 
 	fmt.Print(courseResults)
 }
-
