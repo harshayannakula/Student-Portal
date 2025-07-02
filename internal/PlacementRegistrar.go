@@ -1,6 +1,10 @@
 package internal
 
-import "fmt"
+import (
+	"fmt"
+
+	"golang.org/x/text/cases"
+)
 
 type PlacementRegistrar struct {
 	companies    []Company
@@ -9,25 +13,79 @@ type PlacementRegistrar struct {
 }
 
 type ReportByStudent struct {
-	Applicant
-	totalOffersRecived []Application
-	eligibileRoles     []Drive
-	finalOffer         Applicant
-	ctcForFinalOffer   int
+	applicant        Applicant
+	offersRecived    []Application
+	eligibileRoles   []Drive
+	finalOffer       Drive
+	ctcForFinalOffer int
 }
 
 type FullPlacementReport struct {
-	totalComapanies       []Company
+	allComapanies         []Company
+	totalComapanies       int
 	totalOffersMade       int
+	allOffersMade         []Application
 	totalOffersByCatagory map[JobCategory]int
 }
 
-func (pr PlacementRegistrar) GenerateReportByStudent() ReportByStudent {
-	return ReportByStudent{}
+func (pr PlacementRegistrar) GenerateReportByStudent() []ReportByStudent {
+	var ReportsByStudent []ReportByStudent
+	for _, e := range pr.applicants {
+		report := ReportByStudent{}
+		report.applicant = e
+		for _, d := range pr.AllDrives() {
+			if d.eligibility.checkEligibility(&e) {
+				report.eligibileRoles = append(report.eligibileRoles, d)
+			}
+		}
+		for _, a := range pr.applications {
+			if a.Applicant.ID() == e.ID() || a.status == Selected {
+				report.offersRecived = append(report.offersRecived, a)
+			}
+		}
+		report.finalOffer = e.DrivesAppliedFor()[0]
+		report.ctcForFinalOffer = report.finalOffer.CTC()
+		ReportsByStudent = append(ReportsByStudent, report)
+	}
+	return ReportsByStudent
 }
 
 func (pr PlacementRegistrar) GenerateFullReport() FullPlacementReport {
+	var report FullPlacementReport
+	var allOffersBycatagory map[JobCategory]int
+	report.allComapanies = pr.companies
+	report.totalComapanies = len(report.allComapanies)
+	for _, a := range(pr.applications){
+		if a.Status() == Selected {
+			report.allOffersMade = append(report.allOffersMade, a)
+		}
+	}
+	report.totalOffersMade =  len(report.allOffersMade)
+	for _, d := range(pr.AllDrives()){
+		jc := d.JobCategory()
+		switch jc{
+			case Day:
+				allOffersBycatagory[Day]++;
+			case Dream:
+				allOffersBycatagory[Dream]++;
+			case SuperDream:
+				allOffersBycatagory[SuperDream]++;
+			case Marquee:
+				allOffersBycatagory[Marquee]++;
+		}
+	}
+	report.totalOffersByCatagory = allOffersBycatagory
 	return FullPlacementReport{}
+}
+
+func (pr PlacementRegistrar) AllDrives() []Drive {
+	var alldrives []Drive
+	for _, c := range pr.companies {
+		for _, d := range c.drives {
+			alldrives = append(alldrives, d)
+		}
+	}
+	return alldrives
 }
 
 func (pr *PlacementRegistrar) AddCompany(company Company) { //AddCompany will help us add new company to PlacementRegistrar
