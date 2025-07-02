@@ -22,14 +22,10 @@ type FullPlacementReport struct {
 	totalOffersByCatagory map[JobCategory]int
 }
 
-// TO-DO
 func (pr PlacementRegistrar) GenerateReportByStudent() ReportByStudent {
-
 	return ReportByStudent{}
-
 }
 
-// TO-DO
 func (pr PlacementRegistrar) GenerateFullReport() FullPlacementReport {
 	return FullPlacementReport{}
 }
@@ -121,7 +117,7 @@ func (pr *PlacementRegistrar) ApplyForDrive(studentID, companyID, driveID int) e
 
 	application := Application{
 		id:        len(pr.applicants) + 1,
-		Drive:     *drive,
+		driveId:   driveID,
 		Applicant: *applicant,
 		status:    Applied,
 	}
