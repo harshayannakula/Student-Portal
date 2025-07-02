@@ -5,8 +5,10 @@ import (
 	"time"
 )
 
+// Automatically generated ID generator
 var nextID = SeqID()
 
+// Enum for job category
 type JobCategory int
 
 const (
@@ -16,17 +18,7 @@ const (
 	Marquee
 )
 
-<<<<<<< HEAD
-type Drive struct {
-	id           int
-	startDate    time.Time
-	endDate      time.Time
-	roleName     string
-	eligibility  Eligibility
-	ctc          int
-	jobCategory  JobCategory // its an enum
-	Applications []Application
-=======
+// Map for job category string representation
 var JobCategoryStringMap = map[JobCategory]string{
 	Day:        "Day Company",
 	Dream:      "Dream",
@@ -34,15 +26,21 @@ var JobCategoryStringMap = map[JobCategory]string{
 	Marquee:    "Marquee",
 }
 
+// String method for enum
 func (jc JobCategory) String() string {
 	return JobCategoryStringMap[jc]
->>>>>>> origin/placement
 }
 
+// Eligibility struct
 type Eligibility struct {
 	requirement float64
 }
 
+func (el Eligibility) checkEligibility(applicant *Applicant) bool {
+	panic("unimplemented")
+}
+
+// Drive struct
 type Drive struct {
 	id           int
 	startDate    time.Time
@@ -54,24 +52,41 @@ type Drive struct {
 	applications []Application
 }
 
+// --- Constructor Functions ---
+
 func NewEligibility(minimumGPA float64) Eligibility {
 	return Eligibility{requirement: minimumGPA}
 }
 
-func NewDrive(startDate time.Time, endDate time.Time, roleName string, minimumGPA float64, ctc int, jobCategory JobCategory) Drive {
-	return Drive{id: nextID(), startDate: startDate, endDate: endDate, roleName: roleName, eligibility: NewEligibility(minimumGPA), ctc: ctc, jobCategory: jobCategory}
+func NewDrive(startDate, endDate time.Time, roleName string, minimumGPA, ctc int, jobCategory JobCategory) Drive {
+	return Drive{
+		id:           nextID(),
+		startDate:    startDate,
+		endDate:      endDate,
+		roleName:     roleName,
+		eligibility:  NewEligibility(float64(minimumGPA)),
+		ctc:          ctc,
+		jobCategory:  jobCategory,
+		applications: []Application{},
+	}
 }
 
-// Elegibility setters and Getters
+// --- Eligibility Methods ---
+
 func (el Eligibility) Requirement() float64 {
 	return el.requirement
 }
 
-func (el Eligibility) ChangeRequirement(newReq float64) {
+func (el *Eligibility) ChangeRequirement(newReq float64) {
 	el.requirement = newReq
 }
 
-// Getters
+func (el *Eligibility) CheckEligibility(applicant *Applicant) bool {
+	return applicant.CGPA >= el.requirement
+}
+
+// --- Drive Getters ---
+
 func (dr Drive) ID() int {
 	return dr.id
 }
@@ -104,7 +119,8 @@ func (dr Drive) Applications() []Application {
 	return dr.applications
 }
 
-// Setters
+// --- Drive Setters ---
+
 func (dr *Drive) SetStartDate(startDate time.Time) {
 	dr.startDate = startDate
 }
@@ -133,10 +149,11 @@ func (dr *Drive) AppendApplication(application Application) {
 	dr.applications = append(dr.applications, application)
 }
 
-// Drive Functions
-func (dr *Drive) HasApplied(StudentID int) bool {
+// --- Drive Functional Methods ---
+
+func (dr *Drive) HasApplied(studentID int) bool {
 	for _, e := range dr.applications {
-		if e.Student.ID() == StudentID {
+		if e.Student.ID() == studentID {
 			return true
 		}
 	}
@@ -150,13 +167,4 @@ func (dr *Drive) GetApplicationByID(id int) (*Application, error) {
 		}
 	}
 	return nil, fmt.Errorf("no such application for given id")
-}
-
-// Elegibility functions
-func (el *Eligibility) checkEligibility(applicant *Applicant) bool {
-	if el.requirement > applicant.CGPA {
-		return false
-	} else {
-		return true
-	}
 }

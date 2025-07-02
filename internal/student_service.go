@@ -3,6 +3,9 @@ package internal
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
+	"log"
+	"os"
 )
 
 // UpdateStudentName updates the name of a student by ID in the given slice.
@@ -47,9 +50,22 @@ func DeleteStudentByID(students []Student, id int) ([]Student, error) {
 	return students, errors.New("student not found")
 }
 
-// SerializeStudents serializes the students slice to JSON.
-func SerializeStudents(students []Student) ([]byte, error) {
-	return json.Marshal(students)
+// SerializeStudents serializes the students slice to JSON and writes it to filename(user input).
+func SerializeStudents(students []Student) {
+	var filename string
+	fmt.Println("Enter the filename to serialize student to json")
+	fmt.Scan(filename)
+	file, err := os.Create(filename)
+	if err != nil {
+		log.Fatal("Error creating the json file ")
+	}
+
+	encoder := json.NewEncoder(file)
+	err = encoder.Encode(students)
+
+	if err != nil {
+		log.Fatal("Error writing to the json")
+	}
 }
 
 // DeserializeStudents deserializes JSON data into a slice of students.
