@@ -10,8 +10,8 @@ type CreditCourse struct {
 	Credits int
 }
 
-func NewCreditCourse(id int, name string, credits int) CreditCourse {
-	return CreditCourse{Course: Course{Id: id, Name: name}, Credits: credits}
+func NewCreditCourse(c Course, credits int) CreditCourse {
+	return CreditCourse{Course: c, Credits: credits}
 }
 
 func NewCourse(id int, name string) Course {

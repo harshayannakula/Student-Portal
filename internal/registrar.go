@@ -40,7 +40,7 @@ func (r *Registrar) Enroll(e Enrollment) {
 	r.enrollments = append(r.enrollments, e)
 }
 
-func (r *NewRegistrar) Enrollnew(e Enrollnew) {
+func (r *NewRegistrar) AddEnrollnew(e Enrollnew) {
 	r.enroll = append(r.enroll, e)
 }
 
