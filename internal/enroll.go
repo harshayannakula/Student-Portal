@@ -13,13 +13,26 @@ type Enrollment struct {
 
 type Enrollnew struct {
 	Enrollment            // Embedding Enrollment to include student, course, grader, and score
-	attend     Attendance // Attendance records associated with the enrollment
+	Attend     Attendance // Attendance records associated with the enrollment
 	Teacher               // Embedding Teacher to associate with the enrollment
 }
 
 type Teacherenrollment struct {
 	Teacher
 	CreditCourse
+}
+
+func NewEnrollnew(st Student, c Course, g Grader, score float64, attend Attendance, t Teacher) Enrollnew {
+	return Enrollnew{
+		Enrollment: Enrollment{
+			Student: st,
+			Course:  c,
+			Grader:  g,
+			score:   score,
+		},
+		Attend:  attend,
+		Teacher: t,
+	}
 }
 
 func NewTeacherenrollment(t Teacher, c CreditCourse) Teacherenrollment {
@@ -31,7 +44,7 @@ func NewEnrollment(st Student, c Course, g Grader, score float64) Enrollment {
 }
 
 func enrollnew(st Student, c Course, g Grader, score float64, attend Attendance, t Teacher) Enrollnew {
-	return Enrollnew{Enrollment: Enrollment{Student: st, Course: c, Grader: g, score: score}, attend: attend, Teacher: t}
+	return Enrollnew{Enrollment: Enrollment{Student: st, Course: c, Grader: g, score: score}, Attend: attend, Teacher: t}
 }
 
 func (e Enrollment) String() string {

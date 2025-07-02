@@ -1,45 +1,45 @@
-func (ts *TeacherService) UploadDocument(
+package internal
+
+import (
+	"errors"
+	"fmt"
+	"time"
+)
+
+func (ts *TeacherService) UploadFile(
 	courseID int,
 	studentID int,
 	title string,
-	content string,
+	filename string,
+	mimeType string,
+	content []byte,
 ) error {
-	found := false
-
-	for i, e := range ts.Registrar.enroll {
+	for _, e := range ts.Registrar.NewRegistrar.enroll {
 		if e.Course.Id == courseID &&
 			e.Student.ID() == studentID &&
 			e.Teacher.TID() == ts.Teacher.TID() {
 
-			// Create document
 			doc := Document{
 				Title:      title,
+				Filename:   filename,
 				Content:    content,
-				UploadedAt: time.Now().Format("2006-01-02 15:04:05"),
+				MimeType:   mimeType,
+				UploadedAt: time.Now(),
 			}
 
-			// Wrap in EnrollnewWithDocs
 			enrollWithDocs := EnrollnewWithDocs{
 				Enrollnew: e,
 				Documents: []Document{doc},
 			}
 
-			fmt.Printf("✅ Document uploaded: '%s' for student %d in course %d by teacher %s\n",
-				doc.Title, studentID, courseID, ts.Teacher.TID())
+			ts.Registrar.EnrollnewWithDocs(enrollWithDocs)
 
-			fmt.Println("📎 Uploaded documents:")
-			for _, d := range enrollWithDocs.Documents {
-				fmt.Printf("- %s (at %s)\n", d.Title, d.UploadedAt)
-			}
+			fmt.Printf("File uploaded: %s (%s) for student %d in course %d by teacher %s\n",
+				filename, mimeType, studentID, courseID, ts.Teacher.TID())
 
-			found = true
-			break
+			return nil
 		}
 	}
 
-	if !found {
-		return fmt.Errorf("no valid enrollment found for this teacher, student, and course")
-	}
-
-	return nil
+	return errors.New("no valid enrollment found for this teacher, student, and course")
 }
