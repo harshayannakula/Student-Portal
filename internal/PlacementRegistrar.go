@@ -191,3 +191,14 @@ func (pr *PlacementRegistrar) ApplyForDrive(studentID, companyID, driveID int) e
 	}
 	return nil
 }
+
+func (pr *PlacementRegistrar) UpdateApplicationStatus(studentID, driverID int, newStatus ApplicationStatus) error {
+	for i := range pr.applications {
+		app := &pr.applications[i]
+		if app.Applicant.Student.id == studentID && app.driveId == driverID {
+			app.status = newStatus
+			return nil
+		}
+	}
+	return fmt.Errorf("student with id %d status cannot be updated for drive with id %d", studentID, driverID)
+}
