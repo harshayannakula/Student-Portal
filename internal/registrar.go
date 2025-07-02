@@ -57,14 +57,14 @@ func (r *Registrar) Enrollments() []Enrollment {
 }
 
 type StudentData struct {
-	ID   int    json:"id"
-	Name string json:"name"
+	ID   int    `json:"id"`
+	Name string `json:"name"`
 }
 
 type courseData struct {
-	ID      int     json:"id"
-	Name    string  json:"title"
-	Credits float64 json:"credits"
+	ID      int     `json:"id"`
+	Name    string  `json:"title"`
+	Credits float64 `json:"credits"`
 }
 
 func (regis *Registrar) LoadCourses() {

@@ -23,15 +23,15 @@ type Teacherenrollment struct {
 }
 
 func NewTeacherenrollment(t Teacher, c CreditCourse) Teacherenrollment {
-	return Teacherenrollment{Teacher: t, Course: c}
+	return Teacherenrollment{Teacher: t, CreditCourse: c}
 }
 
 func NewEnrollment(st Student, c Course, g Grader, score float64) Enrollment {
 	return Enrollment{Student: st, Course: c, Grader: g, score: score}
 }
 
-func enrollnew(st Student, c Course, g Grader, score float64, att []Attendance, t Teacher) Enrollnew {
-	return Enrollnew{Enrollment: Enrollment{Student: st, Course: c, Grader: g, score: score}, attend: att}
+func enrollnew(st Student, c Course, g Grader, score float64, attend Attendance, t Teacher) Enrollnew {
+	return Enrollnew{Enrollment: Enrollment{Student: st, Course: c, Grader: g, score: score}, attend: attend, Teacher: t}
 }
 
 func (e Enrollment) String() string {
