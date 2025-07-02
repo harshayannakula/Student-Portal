@@ -1,6 +1,10 @@
 package internal
 
-import "errors"
+import (
+	"encoding/json"
+	"errors"
+	"fmt"
+)
 
 type AlphabeticGrade uint8
 
@@ -80,4 +84,32 @@ func (sr *SemesterResult) getGradePoints(grade AlphabeticGrade) float64 {
 		F:     0.0,
 	}
 	return gradePoints[grade]
+}
+func (a *AlphabeticGrade) UnmarshalJSON(data []byte) error {
+	// Trim quotes
+	var gradeStr string
+	if err := json.Unmarshal(data, &gradeStr); err != nil {
+		return err
+	}
+
+	switch gradeStr {
+	case "O":
+		*a = O
+	case "A+":
+		*a = Aplus
+	case "A":
+		*a = A
+	case "B+":
+		*a = Bplus
+	case "B":
+		*a = B
+	case "C":
+		*a = C
+	case "F":
+		*a = F
+	default:
+		return fmt.Errorf("invalid grade string: %s", gradeStr)
+	}
+
+	return nil
 }
