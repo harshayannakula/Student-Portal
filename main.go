@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"Student-portal/internal"
 	"Student-portal/infrastructure"
-
 	// "oops/main/internal/admin"
 )
 
@@ -25,12 +24,14 @@ func main() {
 	fmt.Println()
 
 	// Teacher 2 views Bob
-	ts2 := &internal.TeacherService{
-		Teacher:   teacher2,
-		Registrar: registrar,
-	}
-	fmt.Println("Teacher:", teacher2.Name)
-	ts2.DisplayAttendance(102, 1002)
-	fmt.Println()
+	// ts2 := &internal.TeacherService{
+	// 	Teacher:   teacher2,
+	// 	Registrar: registrar,
+	// }
+	// fmt.Println("Teacher:", teacher2.Name)
+	// ts2.DisplayAttendance(102, 1002)
+	// fmt.Println()
+
+	
 }
 
