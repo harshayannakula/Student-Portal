@@ -7,11 +7,11 @@ import (
 type PlacementRegistrar struct {
 	companies    []*Company
 	applications []*Application
-	applicants   []Applicant
+	applicants   []*Applicant
 }
 
 type ReportByStudent struct {
-	applicant        Applicant
+	applicant        *Applicant
 	offersRecived    []*Application
 	eligibileRoles   []*Drive
 	finalOffer       *Drive
@@ -32,7 +32,7 @@ func (pr PlacementRegistrar) GenerateReportByStudent() []ReportByStudent {
 		report := ReportByStudent{}
 		report.applicant = e
 		for _, d := range pr.AllDrives() {
-			if d.eligibility.checkEligibility(&e) {
+			if d.eligibility.checkEligibility(e) {
 				report.eligibileRoles = append(report.eligibileRoles, d)
 			}
 		}
@@ -120,7 +120,7 @@ func (pr *PlacementRegistrar) AddDriveToCompany(companyID int, drive *Drive) err
 func (pr *PlacementRegistrar) ApplicantByID(studentID int) (*Applicant, error) {
 	for i := range pr.applicants {
 		if pr.applicants[i].ID() == studentID {
-			return &pr.applicants[i], nil
+			return pr.applicants[i], nil
 		}
 	}
 	return nil, fmt.Errorf("applicant with id %d not found", studentID)
@@ -172,7 +172,7 @@ func (pr *PlacementRegistrar) ApplyForDrive(studentID, companyID, driveID int) e
 	application := &Application{
 		id:        len(pr.applicants) + 1,
 		driveId:   driveID,
-		Applicant: *applicant,
+		Applicant: applicant,
 		status:    Applied,
 	}
 

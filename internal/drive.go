@@ -42,20 +42,20 @@ type Drive struct {
 	applications []*Application
 }
 
-func NewEligibility(minimumGPA float64) Eligibility {
-	return Eligibility{requirement: minimumGPA}
+func NewEligibility(minimumGPA float64) *Eligibility {
+	return &Eligibility{requirement: minimumGPA}
 }
 
-func NewDrive(startDate time.Time, endDate time.Time, roleName string, minimumGPA float64, ctc int, jobCategory JobCategory) Drive {
-	return Drive{id: nextID(), startDate: startDate, endDate: endDate, roleName: roleName, eligibility: NewEligibility(minimumGPA), ctc: ctc, jobCategory: jobCategory}
+func NewDrive(startDate time.Time, endDate time.Time, roleName string, minimumGPA float64, ctc int, jobCategory JobCategory) *Drive {
+	return &Drive{id: nextID(), startDate: startDate, endDate: endDate, roleName: roleName, eligibility: *NewEligibility(minimumGPA), ctc: ctc, jobCategory: jobCategory}
 }
 
 // Elegibility setters and Getters
-func (el Eligibility) Requirement() float64 {
+func (el *Eligibility) Requirement() float64 {
 	return el.requirement
 }
 
-func (el Eligibility) ChangeRequirement(newReq float64) {
+func (el *Eligibility) ChangeRequirement(newReq float64) {
 	el.requirement = newReq
 }
 
@@ -76,8 +76,8 @@ func (dr Drive) RoleName() string {
 	return dr.roleName
 }
 
-func (dr Drive) Eligibility() Eligibility {
-	return dr.eligibility
+func (dr Drive) Eligibility() *Eligibility {
+	return &dr.eligibility
 }
 
 func (dr Drive) CTC() int {

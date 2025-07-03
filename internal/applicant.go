@@ -6,8 +6,8 @@ type Applicant struct {
 	drivesAppliedFor []*Drive
 }
 
-func NewApplicant(st Student, ar AcademicRecord) Applicant {
-	return Applicant{Student: st, AcademicRecord: ar}
+func NewApplicant(st Student, ar AcademicRecord) *Applicant {
+	return &Applicant{Student: st, AcademicRecord: ar}
 }
 
 func (a *Applicant) DrivesAppliedFor() []*Drive {
