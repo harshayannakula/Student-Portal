@@ -56,29 +56,28 @@ func (ts *TeacherService) UploadStudentMarksFromJSON(jsonData []byte) error {
 	}
 
 	if len(errs) > 0 {
-		return errors.New("Errors occurred: " + fmt.Sprint(errs))
+		return errors.New("errors occurred: " + fmt.Sprint(errs))
 	}
 	return nil
 }
 
 func (ts *TeacherService) GetCourseResults(courseID int) ([]StudentResult, error) {
-    var results []StudentResult
-    for _, e := range ts.Registrar.enroll {
-        if e.Course.Id == courseID && e.Teacher.TID() == ts.Teacher.TID() {
-            grade, _ := e.Grader.Grade(e.Enrollment)
-            results = append(results, StudentResult{
-                CourseID:    e.Course.Id,
-                CourseName:  e.Course.Name,            
-                StudentID:   e.Student.ID(),
-                StudentName: e.Student.Name(),      
-                Score:       e.score,
-                Grade:       grade,
-            })
-        }
-    }
-    if len(results) == 0 {
-        return nil, fmt.Errorf("no students found for course %d and teacher %d\n", courseID, ts.Teacher.TID())
-    }
-    return results, nil
+	var results []StudentResult
+	for _, e := range ts.Registrar.enroll {
+		if e.Course.Id == courseID && e.Teacher.TID() == ts.Teacher.TID() {
+			grade, _ := e.Grader.Grade(e.Enrollment)
+			results = append(results, StudentResult{
+				CourseID:    e.Course.Id,
+				CourseName:  e.Course.Name,
+				StudentID:   e.Student.ID(),
+				StudentName: e.Student.Name(),
+				Score:       e.score,
+				Grade:       grade,
+			})
+		}
+	}
+	if len(results) == 0 {
+		return nil, fmt.Errorf("no students found for course %d and teacher %s", courseID, ts.Teacher.TID())
+	}
+	return results, nil
 }
-
