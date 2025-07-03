@@ -1,13 +1,42 @@
 package internal
 
+import (
+	"errors"
+	"fmt"
+)
+
 type Applicant struct {
 	Student
 	AcademicRecord
 	drivesAppliedFor []*Drive
+	offersRecived []*Drive
 }
 
 func NewApplicant(st Student, ar AcademicRecord) *Applicant {
 	return &Applicant{Student: st, AcademicRecord: ar}
+}
+
+func (a *Applicant) getAllRecivedOffersDrivesAndApplications() ([]*Drive, []*Application) {
+	var drarr []*Drive
+	var pparr []*Application
+	for _, d := range a.drivesAppliedFor {
+		for _, app := range d.applications{
+			if app.Status() == Selected && app.Applicant.ID() == a.ID() {
+				drarr = append(drarr, d)
+				pparr = append(pparr, app)
+			}
+		}
+	}
+	return drarr, pparr
+}
+
+func (a* Applicant) getFinalOffer() (int, error) {
+	drArr , _ :=a.getAllRecivedOffersDrivesAndApplications()
+	if len(drArr) == 0 {
+		return drArr[0].CTC(), nil
+	} else {
+		return -1, fmt.Errorf("no offers yet")
+	}
 }
 
 func (a *Applicant) DrivesAppliedFor() []*Drive {

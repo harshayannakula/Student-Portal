@@ -18,12 +18,32 @@ type ReportByStudent struct {
 	ctcForFinalOffer int
 }
 
+type ReportByDrive struct {
+	drive                *Drive
+	company              *Company
+	driveCTC             int
+	noOfSelectedStudents int
+}
+
 type FullPlacementReport struct {
 	allComapanies         []*Company
 	totalComapanies       int
 	totalOffersMade       int
 	allOffersMade         []*Application
 	totalOffersByCatagory map[JobCategory]int
+}
+
+func (pr PlacementRegistrar) GenerateReportByDrive() ReportByDrive {
+	var reportByDrive ReportByDrive
+	for _, c := range(pr.companies){
+		for _, d := range(c.Drives()){
+			reportByDrive.company = c
+			reportByDrive.drive = d
+			reportByDrive.driveCTC = d.CTC()
+			reportByDrive.noOfSelectedStudents = len(d.getSelectedApplications())
+		}
+	}
+	return reportByDrive
 }
 
 func (pr PlacementRegistrar) GenerateReportByStudent() []ReportByStudent {
@@ -84,7 +104,7 @@ func (pr PlacementRegistrar) AllDrives() []*Drive {
 	return alldrives
 }
 
-func (pr *PlacementRegistrar) AddCompany(company *Company) { //AddCompany will help us add new company to PlacementRegistrar
+func (pr *PlacementRegistrar) AddCompany(company *Company) { // AddCompany will help us add new company to PlacementRegistrar
 	pr.companies = append(pr.companies, company)
 }
 
@@ -106,6 +126,7 @@ func (pr *PlacementRegistrar) UpdateCompany(UpdatedCompany *Company) error {
 	}
 	return fmt.Errorf("Company not found %d to update", UpdatedCompany.id)
 }
+
 func (pr *PlacementRegistrar) AddDriveToCompany(companyID int, drive *Drive) error {
 	for i := range pr.companies {
 		if pr.companies[i].id == companyID {
@@ -152,7 +173,6 @@ func (pr *PlacementRegistrar) DriveByID(companyID, driveID int) (*Drive, error) 
 
 func (pr *PlacementRegistrar) ApplyForDrive(studentID, companyID, driveID int) error {
 	applicant, err := pr.ApplicantByID(studentID)
-
 	if err != nil {
 		return fmt.Errorf("applicant not found: %v", err)
 	}

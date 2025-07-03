@@ -140,6 +140,26 @@ func (dr *Drive) GetApplicationByID(id int) (*Application, error) {
 	return nil, fmt.Errorf("no such application for given id")
 }
 
+func (dr *Drive) getSelectedApplications() []*Application{
+	var arr []*Application
+	for _, app := range dr.Applications(){
+		if app.Status() == Selected {
+			arr = append(arr, app)
+		}
+	}
+	return arr
+}
+
+func (dr *Drive) getShortlistedApplications() []*Application{
+	var arr []*Application
+	for _, app := range dr.Applications(){
+		if app.Status() ==  ShortListed {
+			arr = append(arr, app)
+		}
+	}
+	return arr
+}
+
 // Elegibility functions
 func (el *Eligibility) checkEligibility(applicant *Applicant) bool {
 	if el.requirement > applicant.CGPA {
