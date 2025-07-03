@@ -13,7 +13,7 @@ type Enrollment struct {
 
 type Enrollnew struct {
 	Enrollment            // Embedding Enrollment to include student, course, grader, and score
-	attend     Attendance // Attendance records associated with the enrollment
+	Attend     Attendance // Attendance records associated with the enrollment
 	Teacher               // Embedding Teacher to associate with the enrollment
 }
 
@@ -38,7 +38,7 @@ func NewEnrollment(st Student, c Course, g Grader, score float64) Enrollment {
 func Enroll(oe Enrollment, att Attendance, t Teacher, teachermap []Teacherenrollment) (Enrollnew, bool) {
 	for _, te := range teachermap {
 		if te.Teacher.ID() == t.ID() && te.Course.Id == oe.Course.Id {
-			return Enrollnew{Enrollment: oe, attend: att, Teacher: t}, true
+			return Enrollnew{Enrollment: oe, Attend: att, Teacher: t}, true
 		}
 	}
 	return Enrollnew{}, false

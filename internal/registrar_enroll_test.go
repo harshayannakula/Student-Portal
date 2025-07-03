@@ -1,21 +1,22 @@
 package internal
 
 import (
+	"fmt"
 	"testing"
 	"time"
 )
 
-var student1 = NewStudent(1, "alice")
+var Student1 = NewStudent(1, "alice")
 
-var course1 = NewCourse(101, "Golang")
+var Course1 = NewCourse(101, "Golang")
 
-var creditcourse1 = NewCreditCourse(course1, 3)
+var Creditcourse1 = NewCreditCourse(Course1, 3)
 
-var teacher1 = Teacher{
+var Teacher1 = Teacher{
 	id:   1,
 	Name: "bob",
 }
-var teacherenrollment1 = NewTeacherenrollment(teacher1, creditcourse1)
+var Teacherenrollment1 = NewTeacherenrollment(Teacher1, Creditcourse1)
 
 var Attendance1 = Attendance{
 	Records: map[time.Time]bool{
@@ -24,7 +25,7 @@ var Attendance1 = Attendance{
 	},
 }
 
-var Enrollment1 = NewEnrollment(student1, course1, nil, 0.0)
+var Enrollment1 = NewEnrollment(Student1, Course1, nil, 0.0)
 
 var Registrar1 = NewRegistrar{
 	Registrar: Registrar{
@@ -38,12 +39,12 @@ var Registrar1 = NewRegistrar{
 }
 
 func TestNewRegistrar(t *testing.T) {
-	Registrar1.AddStudent(student1)
-	Registrar1.AddCourse(course1)
-	Registrar1.AddTeacher(teacher1)
-	Registrar1.AddTeacherenrollment(teacherenrollment1)
+	Registrar1.AddStudent(Student1)
+	Registrar1.AddCourse(Course1)
+	Registrar1.AddTeacher(Teacher1)
+	Registrar1.AddTeacherenrollment(Teacherenrollment1)
 	Registrar1.Enroll(Enrollment1)
-	Enrollnew1, _ := Enroll(Enrollment1, Attendance1, teacher1, Registrar1.Teachermap)
+	Enrollnew1, _ := Enroll(Enrollment1, Attendance1, Teacher1, Registrar1.Teachermap)
 	Registrar1.AddEnrollnew(Enrollnew1)
 
 	if Registrar1.students == nil {
@@ -63,6 +64,24 @@ func TestNewRegistrar(t *testing.T) {
 	}
 	if Registrar1.enroll == nil {
 		t.Error("Expected enroll slice to be initialized, got nil")
+	}
+}
+
+func TestMarkAttendance1(t *testing.T) {
+	attendTime := time.Now()
+
+	ok1 := Giveattendence(&Registrar1, Course1.Id, Student1.id, Teacher1.id, true, attendTime)
+	if !ok1 {
+		t.Error("Error in Giving attendence")
+	}
+
+	a, ok := FetchAttendance(&Registrar1, Course1.Id, Student1.id, Teacher1.id)
+	if !ok {
+		t.Error("Attendance not marked")
+		fmt.Println(Course1.Id)
+	}
+	if a[attendTime] != true {
+		t.Error("Wrong attendance value")
 	}
 }
 
