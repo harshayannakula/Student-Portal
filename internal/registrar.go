@@ -13,33 +13,40 @@ type Registrar struct {
 	enrollments []Enrollment
 }
 
+// NewRegistrar creates a new Registrar instance
 type NewRegistrar struct {
-	Registrar
-	teacher    []Teacher
-	teachermap []Teacherenrollment
-	enroll     []Enrollnew
+	Registrar                      // Embedding Registrar to extend its functionality
+	teacher    []Teacher           // List of teachers
+	teachermap []Teacherenrollment // list of Map of teachers with their courses
+	enroll     []Enrollnew         // List of enrollments (students with courses) with additional teacher and attendance information
 }
 
+// function to adppend teacher into register
 func (r *NewRegistrar) AddTeacher(t Teacher) {
 	r.teacher = append(r.teacher, t)
 }
 
+// function to add teacher with course in teacher map
 func (r *NewRegistrar) AddTeacherenrollment(te Teacherenrollment) {
 	r.teachermap = append(r.teachermap, te)
 }
 
+// function to add student into register
 func (r *Registrar) AddStudent(s Student) {
 	r.students = append(r.students, s)
 }
 
+// function to add course into register
 func (r *Registrar) AddCourse(c Course) {
 	r.courses = append(r.courses, c)
 }
 
+// old variable of enrollment which maintain only student with courses
 func (r *Registrar) Enroll(e Enrollment) {
 	r.enrollments = append(r.enrollments, e)
 }
 
+// new variable to maintain enrollments with additional information like teacher and attendance
 func (r *NewRegistrar) AddEnrollnew(e Enrollnew) {
 	r.enroll = append(r.enroll, e)
 }
