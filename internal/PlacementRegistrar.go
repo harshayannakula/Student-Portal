@@ -171,7 +171,7 @@ func (pr *PlacementRegistrar) CompanyByID(id int) (*Company, error) {
 			return pr.companies[i], nil
 		}
 	}
-	return nil, fmt.Errorf("company with found %d not found", id)
+	return nil, fmt.Errorf("company with id %d not found", id)
 }
 
 func (pr *PlacementRegistrar) DriveByID(companyID, driveID int) (*Drive, error) {
