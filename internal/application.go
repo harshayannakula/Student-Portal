@@ -13,7 +13,7 @@ const (
 type Application struct {
 	id int
 	driveId int
-	Applicant
+	*Applicant
 	status ApplicationStatus
 }
 

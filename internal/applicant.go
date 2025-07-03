@@ -1,24 +1,52 @@
 package internal
 
+import (
+	"fmt"
+)
+
 type Applicant struct {
 	Student
 	AcademicRecord
-	drivesAppliedFor []Drive
+	drivesAppliedFor []*Drive
+	offersRecived []*Drive
 }
 
-func NewApplicant(st Student, ar AcademicRecord) Applicant {
-	return Applicant{Student: st, AcademicRecord: ar}
+func NewApplicant(st Student, ar AcademicRecord) *Applicant {
+	return &Applicant{Student: st, AcademicRecord: ar}
 }
 
-func (a *Applicant) DrivesAppliedFor() []Drive {
+func (a *Applicant) getAllRecivedOffersDrivesAndApplications() ([]*Drive, []*Application) {
+	var drarr []*Drive
+	var pparr []*Application
+	for _, d := range a.drivesAppliedFor {
+		for _, app := range d.applications{
+			if app.Status() == Selected && app.Applicant.ID() == a.ID() {
+				drarr = append(drarr, d)
+				pparr = append(pparr, app)
+			}
+		}
+	}
+	return drarr, pparr
+}
+
+func (a* Applicant) getFinalOffer() (int, error) {
+	drArr , _ :=a.getAllRecivedOffersDrivesAndApplications()
+	if len(drArr) == 0 {
+		return drArr[0].CTC(), nil
+	} else {
+		return -1, fmt.Errorf("no offers yet")
+	}
+}
+
+func (a *Applicant) DrivesAppliedFor() []*Drive {
 	return a.drivesAppliedFor
 }
 
-func (a *Applicant) AddDrivesAppliedFor(drive Drive) {
+func (a *Applicant) AddDrivesAppliedFor(drive *Drive) {
 	a.drivesAppliedFor = append(a.drivesAppliedFor, drive)
 }
 
-func (a *Applicant) SetDrivesAppliedFor(drives []Drive) {
+func (a *Applicant) SetDrivesAppliedFor(drives []*Drive) {
 	a.drivesAppliedFor = drives
 }
 
@@ -30,7 +58,7 @@ func (a *Applicant) CompaniesAppliedFor(pr *PlacementRegistrar) []string {
 			for _, company := range pr.companies {
 				for _, drive := range company.drives {
 					if drive.id == app.driveId {
-						companySet[company.name] = struct{}{}
+						companySet[company.name] = struct{}{} // in the companyset the struct only checks if the key is present and not the value , its more memory efficent and holds all company name in a map
 					}
 				}
 			}

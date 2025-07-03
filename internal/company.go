@@ -3,7 +3,7 @@ package internal
 type Company struct {
 	id     int
 	name   string
-	drives []Drive
+	drives []*Drive
 }
 
 func (c *Company) ID() int {
@@ -14,10 +14,10 @@ func (c *Company) Name() string {
 	return c.name
 }
 
-func (c *Company) Drives() []Drive {
+func (c *Company) Drives() []*Drive {
 	return c.drives
 }
 
-func (c *Company) AddDrive(drive Drive) {
+func (c *Company) AddDrive(drive *Drive) {
 	c.drives = append(c.drives, drive)
 }

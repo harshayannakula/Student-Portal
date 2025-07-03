@@ -49,31 +49,21 @@ type Drive struct {
 	eligibility  Eligibility
 	ctc          int
 	jobCategory  JobCategory
-	applications []Application
+	applications []*Application
 }
 
 // --- Constructor Functions ---
 
-func NewEligibility(minimumGPA float64) Eligibility {
-	return Eligibility{requirement: minimumGPA}
+func NewEligibility(minimumGPA float64) *Eligibility {
+	return &Eligibility{requirement: minimumGPA}
 }
 
-func NewDrive(startDate, endDate time.Time, roleName string, minimumGPA, ctc int, jobCategory JobCategory) Drive {
-	return Drive{
-		id:           nextID(),
-		startDate:    startDate,
-		endDate:      endDate,
-		roleName:     roleName,
-		eligibility:  NewEligibility(float64(minimumGPA)),
-		ctc:          ctc,
-		jobCategory:  jobCategory,
-		applications: []Application{},
-	}
+func NewDrive(startDate time.Time, endDate time.Time, roleName string, minimumGPA float64, ctc int, jobCategory JobCategory) *Drive {
+	return &Drive{id: nextID(), startDate: startDate, endDate: endDate, roleName: roleName, eligibility: *NewEligibility(minimumGPA), ctc: ctc, jobCategory: jobCategory}
 }
 
-// --- Eligibility Methods ---
-
-func (el Eligibility) Requirement() float64 {
+// Elegibility setters and Getters
+func (el *Eligibility) Requirement() float64 {
 	return el.requirement
 }
 
@@ -103,8 +93,8 @@ func (dr Drive) RoleName() string {
 	return dr.roleName
 }
 
-func (dr Drive) Eligibility() Eligibility {
-	return dr.eligibility
+func (dr Drive) Eligibility() *Eligibility {
+	return &dr.eligibility
 }
 
 func (dr Drive) CTC() int {
@@ -115,7 +105,7 @@ func (dr Drive) JobCategory() JobCategory {
 	return dr.jobCategory
 }
 
-func (dr Drive) Applications() []Application {
+func (dr Drive) Applications() []*Application {
 	return dr.applications
 }
 
@@ -145,7 +135,7 @@ func (dr *Drive) SetJobCategory(jobCat JobCategory) {
 	dr.jobCategory = jobCat
 }
 
-func (dr *Drive) AppendApplication(application Application) {
+func (dr *Drive) AppendApplication(application *Application) {
 	dr.applications = append(dr.applications, application)
 }
 
@@ -163,8 +153,37 @@ func (dr *Drive) HasApplied(studentID int) bool {
 func (dr *Drive) GetApplicationByID(id int) (*Application, error) {
 	for _, e := range dr.applications {
 		if e.ID() == id {
-			return &e, nil
+			return e, nil
 		}
 	}
 	return nil, fmt.Errorf("no such application for given id")
+}
+
+func (dr *Drive) getSelectedApplications() []*Application {
+	var arr []*Application
+	for _, app := range dr.Applications() {
+		if app.Status() == Selected {
+			arr = append(arr, app)
+		}
+	}
+	return arr
+}
+
+func (dr *Drive) getShortlistedApplications() []*Application {
+	var arr []*Application
+	for _, app := range dr.Applications() {
+		if app.Status() == ShortListed {
+			arr = append(arr, app)
+		}
+	}
+	return arr
+}
+
+// Elegibility functions
+func (el *Eligibility) checkEligibility(applicant *Applicant) bool {
+	if el.requirement > applicant.CGPA {
+		return false
+	} else {
+		return true
+	}
 }
