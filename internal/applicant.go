@@ -30,7 +30,7 @@ func (a *Applicant) CompaniesAppliedFor(pr *PlacementRegistrar) []string {
 			for _, company := range pr.companies {
 				for _, drive := range company.drives {
 					if drive.id == app.driveId {
-						companySet[company.name] = struct{}{}
+						companySet[company.name] = struct{}{} // in the companyset the struct only checks if the key is present and not the value , its more memory efficent and holds all company name in a map
 					}
 				}
 			}
