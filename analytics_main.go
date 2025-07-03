@@ -63,5 +63,4 @@ func main() {
 	} else {
 		fmt.Println("✅ Company Selection Chart Generated.")
 	}
-
 }
