@@ -208,7 +208,7 @@ func (pr *PlacementRegistrar) ApplyForDrive(studentID, companyID, driveID int) e
 	}
 
 	application := &Application{
-		id:        len(pr.applicants) + 1,
+		id:        len(pr.applications) + 1,
 		driveId:   driveID,
 		Applicant: applicant,
 		status:    Applied,
