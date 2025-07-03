@@ -5,24 +5,24 @@ import (
 )
 
 type PlacementRegistrar struct {
-	companies    []Company
-	applications []Application
+	companies    []*Company
+	applications []*Application
 	applicants   []Applicant
 }
 
 type ReportByStudent struct {
 	applicant        Applicant
-	offersRecived    []Application
+	offersRecived    []*Application
 	eligibileRoles   []*Drive
 	finalOffer       *Drive
 	ctcForFinalOffer int
 }
 
 type FullPlacementReport struct {
-	allComapanies         []Company
+	allComapanies         []*Company
 	totalComapanies       int
 	totalOffersMade       int
-	allOffersMade         []Application
+	allOffersMade         []*Application
 	totalOffersByCatagory map[JobCategory]int
 }
 
@@ -84,20 +84,20 @@ func (pr PlacementRegistrar) AllDrives() []*Drive {
 	return alldrives
 }
 
-func (pr *PlacementRegistrar) AddCompany(company Company) { //AddCompany will help us add new company to PlacementRegistrar
+func (pr *PlacementRegistrar) AddCompany(company *Company) { //AddCompany will help us add new company to PlacementRegistrar
 	pr.companies = append(pr.companies, company)
 }
 
 func (pr *PlacementRegistrar) GetCompanyByID(id int) (*Company, error) {
 	for i := range pr.companies {
 		if pr.companies[i].id == id {
-			return &pr.companies[i], nil
+			return pr.companies[i], nil
 		}
 	}
 	return nil, fmt.Errorf("company with id %d is not found", id)
 }
 
-func (pr *PlacementRegistrar) UpdateCompany(UpdatedCompany Company) error {
+func (pr *PlacementRegistrar) UpdateCompany(UpdatedCompany *Company) error {
 	for i := range pr.companies {
 		if pr.companies[i].id == UpdatedCompany.id {
 			pr.companies[i] = UpdatedCompany
@@ -129,7 +129,7 @@ func (pr *PlacementRegistrar) ApplicantByID(studentID int) (*Applicant, error) {
 func (pr *PlacementRegistrar) CompanyByID(id int) (*Company, error) {
 	for i := range pr.companies {
 		if pr.companies[i].ID() == id {
-			return &pr.companies[i], nil
+			return pr.companies[i], nil
 		}
 	}
 	return nil, fmt.Errorf("company with found %d not found", id)
@@ -169,7 +169,7 @@ func (pr *PlacementRegistrar) ApplyForDrive(studentID, companyID, driveID int) e
 		return fmt.Errorf("applicant is not meet the criteria ")
 	}
 
-	application := Application{
+	application := &Application{
 		id:        len(pr.applicants) + 1,
 		driveId:   driveID,
 		Applicant: *applicant,
@@ -190,7 +190,7 @@ func (pr *PlacementRegistrar) ApplyForDrive(studentID, companyID, driveID int) e
 
 func (pr *PlacementRegistrar) UpdateApplicationStatus(studentID, driverID int, newStatus ApplicationStatus) error {
 	for i := range pr.applications {
-		app := &pr.applications[i]
+		app := pr.applications[i]
 		if app.Student.id == studentID && app.driveId == driverID {
 			app.status = newStatus
 			return nil

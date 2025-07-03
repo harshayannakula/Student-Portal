@@ -39,7 +39,7 @@ type Drive struct {
 	eligibility  Eligibility
 	ctc          int
 	jobCategory  JobCategory
-	applications []Application
+	applications []*Application
 }
 
 func NewEligibility(minimumGPA float64) Eligibility {
@@ -88,7 +88,7 @@ func (dr Drive) JobCategory() JobCategory {
 	return dr.jobCategory
 }
 
-func (dr Drive) Applications() []Application {
+func (dr Drive) Applications() []*Application {
 	return dr.applications
 }
 
@@ -117,7 +117,7 @@ func (dr *Drive) SetJobCategory(jobCat JobCategory) {
 	dr.jobCategory = jobCat
 }
 
-func (dr *Drive) AppendApplication(application Application) {
+func (dr *Drive) AppendApplication(application *Application) {
 	dr.applications = append(dr.applications, application)
 }
 
@@ -134,7 +134,7 @@ func (dr *Drive) HasApplied(StudentID int) bool {
 func (dr *Drive) GetApplicationByID(id int) (*Application, error) {
 	for _, e := range dr.applications {
 		if e.ID() == id {
-			return &e, nil
+			return e, nil
 		}
 	}
 	return nil, fmt.Errorf("no such application for given id")
