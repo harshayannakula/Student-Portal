@@ -298,7 +298,7 @@ func TestApplicant_getAllRecivedOffersDrivesAndApplications(t *testing.T) {
 		a.AddDrivesAppliedFor(d1)
 		a.AddDrivesAppliedFor(d2)
 
-		drives, apps := a.getAllRecivedOffersDrivesAndApplications()
+		drives, apps := a.getAllReceivedOffersDrivesAndApplications()
 
 		if len(drives) != 1 || len(apps) != 1 {
 			t.Errorf("expected 1 offer, got %d drives and %d apps", len(drives), len(apps))
@@ -310,7 +310,7 @@ func TestApplicant_getAllRecivedOffersDrivesAndApplications(t *testing.T) {
 
 	t.Run("should return empty for no offers", func(t *testing.T) {
 		a := NewApplicant(Student{id: 6}, AcademicRecord{})
-		drives, apps := a.getAllRecivedOffersDrivesAndApplications()
+		drives, apps := a.getAllReceivedOffersDrivesAndApplications()
 
 		if len(drives) != 0 || len(apps) != 0 {
 			t.Error("should return empty slices for no offers")
@@ -328,7 +328,7 @@ func TestApplicant_getAllRecivedOffersDrivesAndApplications(t *testing.T) {
 		a.AddDrivesAppliedFor(d1)
 		a.AddDrivesAppliedFor(d2)
 
-		drives, apps := a.getAllRecivedOffersDrivesAndApplications()
+		drives, apps := a.getAllReceivedOffersDrivesAndApplications()
 
 		if len(drives) != 2 || len(apps) != 2 {
 			t.Errorf("expected 2 offers, got %d drives and %d apps", len(drives), len(apps))
@@ -344,7 +344,7 @@ func TestApplicant_getAllRecivedOffersDrivesAndApplications(t *testing.T) {
 		d1.applications = []*Application{app1, app2}
 		a.AddDrivesAppliedFor(d1)
 
-		drives, apps := a.getAllRecivedOffersDrivesAndApplications()
+		drives, apps := a.getAllReceivedOffersDrivesAndApplications()
 
 		if len(drives) != 1 || len(apps) != 1 {
 			t.Errorf("expected 1 offer for this applicant, got %d drives and %d apps", len(drives), len(apps))
