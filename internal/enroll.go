@@ -34,10 +34,11 @@ func NewEnrollment(st Student, c Course, g Grader, score float64) Enrollment {
 }
 
 // made enrool function to check with teacher maping with course (changes may be like checking in main while adding or passing teacher map from rigister to enroll function)
-func Enroll(st Student, c Course, g Grader, score float64, att Attendance, t Teacher, teachermap []Teacherenrollment) (Enrollnew, bool) {
+// func Enroll(st Student, c Course, g Grader, score float64, att Attendance, t Teacher, teachermap []Teacherenrollment) (Enrollnew, bool) {
+func Enroll(oe Enrollment, att Attendance, t Teacher, teachermap []Teacherenrollment) (Enrollnew, bool) {
 	for _, te := range teachermap {
-		if te.Teacher.ID() == t.ID() && te.Course.Id == c.Id {
-			return Enrollnew{Enrollment: Enrollment{Student: st, Course: c, Grader: g, score: score}, attend: att, Teacher: t}, true
+		if te.Teacher.ID() == t.ID() && te.Course.Id == oe.Course.Id {
+			return Enrollnew{Enrollment: oe, attend: att, Teacher: t}, true
 		}
 	}
 	return Enrollnew{}, false

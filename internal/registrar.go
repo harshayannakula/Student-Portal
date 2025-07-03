@@ -17,7 +17,7 @@ type Registrar struct {
 type NewRegistrar struct {
 	Registrar                      // Embedding Registrar to extend its functionality
 	teacher    []Teacher           // List of teachers
-	teachermap []Teacherenrollment // list of Map of teachers with their courses
+	Teachermap []Teacherenrollment // list of Map of teachers with their courses
 	enroll     []Enrollnew         // List of enrollments (students with courses) with additional teacher and attendance information
 }
 
@@ -28,7 +28,7 @@ func (r *NewRegistrar) AddTeacher(t Teacher) {
 
 // function to add teacher with course in teacher map
 func (r *NewRegistrar) AddTeacherenrollment(te Teacherenrollment) {
-	r.teachermap = append(r.teachermap, te)
+	r.Teachermap = append(r.Teachermap, te)
 }
 
 // function to add student into register
