@@ -8,14 +8,14 @@ type Applicant struct {
 	Student
 	AcademicRecord
 	drivesAppliedFor []*Drive
-	offersRecived    []*Drive
+	offersReceived   []*Drive
 }
 
 func NewApplicant(st Student, ar AcademicRecord) *Applicant {
-	return &Applicant{Student: st, AcademicRecord: ar, drivesAppliedFor: make([]*Drive, 0), offersRecived: make([]*Drive, 0)}
+	return &Applicant{Student: st, AcademicRecord: ar, drivesAppliedFor: make([]*Drive, 0), offersReceived: make([]*Drive, 0)}
 }
 
-func (a *Applicant) getAllRecivedOffersDrivesAndApplications() ([]*Drive, []*Application) {
+func (a *Applicant) getAllReceivedOffersDrivesAndApplications() ([]*Drive, []*Application) {
 	var drarr []*Drive
 	var pparr []*Application
 	for _, d := range a.drivesAppliedFor {
