@@ -29,11 +29,6 @@ func ExportTranscript(path string, list []internal.Enrollment) error {
 	return w.Error()
 }
 
-// func hello() {
-// 	var atRiskStudents []internal.AcademicRecord
-// 	fmt.Print(atRiskStudents)
-// }
-
 func ExportAtRiskStudents(path string, internal []internal.AcademicRecord) error {
 
 	for _, student := range internal {
