@@ -30,7 +30,7 @@ func (a *Applicant) getAllReceivedOffersDrivesAndApplications() ([]*Drive, []*Ap
 }
 
 func (a *Applicant) getFinalOffer() (int, error) {
-	drArr, _ := a.getAllRecivedOffersDrivesAndApplications()
+	drArr, _ := a.getAllReceivedOffersDrivesAndApplications()
 	if len(drArr) == 0 {
 		return -1, fmt.Errorf("no offers yet")
 	} else {
