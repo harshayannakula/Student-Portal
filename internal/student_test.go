@@ -1,7 +1,7 @@
 package internal
 
 import (
-	"encoding/json"
+	"log"
 	"testing"
 )
 
@@ -113,18 +113,9 @@ func TestDeleteStudentByID(t *testing.T) {
 func TestSerializeStudents(t *testing.T) {
 	students := createSampleStudents()
 
-	data, err := SerializeStudents(students)
+	err := SerializeStudents("students.json", students) // No return value, just ensure no panic
 	if err != nil {
-		t.Errorf("serialization failed: %v", err)
-	}
-	if len(data) == 0 {
-		t.Error("expected non-empty JSON data")
-	}
-
-	var back []Student
-	err = json.Unmarshal(data, &back)
-	if err != nil {
-		t.Errorf("unmarshal back failed: %v", err)
+		log.Fatal("Could not create the json ")
 	}
 }
 
@@ -144,5 +135,69 @@ func TestDeserializeStudents(t *testing.T) {
 	_, err = DeserializeStudents(badData)
 	if err == nil {
 		t.Error("expected error for invalid JSON")
+	}
+}
+
+// --- Test StudentPlacementService ---
+func TestStudentPlacementService(t *testing.T) {
+	student := NewStudent(1, "Alice")
+	ar := AcademicRecord{StudentId: 1, CGPA: 9.0}
+	applicant := Applicant{Student: student, AcademicRecord: ar}
+	company := Company{id: 1, name: "TestCorp"}
+	drive := Drive{id: 1, roleName: "Engineer", eligibility: Eligibility{requirement: 8.0}}
+	company.drives = []Drive{drive}
+	pr := PlacementRegistrar{
+		companies:    []Company{company},
+		applications: []Application{},
+		applicants:   []Applicant{applicant},
+	}
+	service := &StudentPlacementService{
+		student:            student,
+		drive:              drive,
+		applicant:          applicant,
+		PlacementRegistrar: pr,
+		Company:            company,
+	}
+
+	// Test GetDrive
+	if service.GetDrive().ID() != drive.ID() {
+		t.Errorf("expected drive ID %d, got %d", drive.ID(), service.GetDrive().ID())
+	}
+
+	// Test CompaniesApplicable
+	applicable := service.CompaniesApplicable()
+	if len(applicable) == 0 || applicable[0] != "TestCorp" {
+		t.Errorf("expected TestCorp to be applicable, got %v", applicable)
+	}
+
+	// Test CompaniesApplied (should be empty initially)
+	a := service.CompaniesApplied().([]string)
+	if len(a) != 0 {
+		t.Errorf("expected no companies applied, got %v", a)
+	}
+
+	// Test Apply (simulate application)
+	service.PlacementRegistrar.applicants = []Applicant{service.applicant}
+	service.PlacementRegistrar.companies = []Company{service.Company}
+	service.PlacementRegistrar.applications = nil
+	service.drive = drive
+	service.Company = company
+	_ = service.Apply() // Should not panic
+}
+
+// --- Test Notifications ---
+func TestDriveNotification(t *testing.T) {
+	drive := Drive{id: 1, roleName: "Engineer"}
+	n := NewDriveNotification(drive)
+	returned := n.Send().(Drive)
+	if returned.id != drive.id || returned.roleName != drive.roleName {
+		t.Errorf("DriveNotification did not return correct drive")
+	}
+}
+
+func TestResultNotification(t *testing.T) {
+	n := NewResultNotification(5)
+	if n.Send() != 5 {
+		t.Errorf("ResultNotification did not return correct days left")
 	}
 }

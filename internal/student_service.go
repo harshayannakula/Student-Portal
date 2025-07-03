@@ -3,7 +3,7 @@ package internal
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
+
 	"log"
 	"os"
 )
@@ -51,13 +51,12 @@ func DeleteStudentByID(students []Student, id int) ([]Student, error) {
 }
 
 // SerializeStudents serializes the students slice to JSON and writes it to filename(user input).
-func SerializeStudents(students []Student) {
-	var filename string
-	fmt.Println("Enter the filename to serialize student to json")
-	fmt.Scan(filename)
+func SerializeStudents(filename string, students []Student) error {
+
 	file, err := os.Create(filename)
 	if err != nil {
 		log.Fatal("Error creating the json file ")
+		return err
 	}
 
 	encoder := json.NewEncoder(file)
@@ -65,7 +64,9 @@ func SerializeStudents(students []Student) {
 
 	if err != nil {
 		log.Fatal("Error writing to the json")
+		return err
 	}
+	return nil
 }
 
 // DeserializeStudents deserializes JSON data into a slice of students.
