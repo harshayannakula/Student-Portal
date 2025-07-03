@@ -118,7 +118,9 @@ func (dr *Drive) SetJobCategory(jobCat JobCategory) {
 }
 
 func (dr *Drive) AppendApplication(application *Application) {
-	dr.applications = append(dr.applications, application)
+	if application != nil{
+		dr.applications = append(dr.applications, application)
+	}
 }
 
 // Drive Functions
@@ -162,7 +164,7 @@ func (dr *Drive) getShortlistedApplications() []*Application{
 
 // Elegibility functions
 func (el *Eligibility) checkEligibility(applicant *Applicant) bool {
-	if el.requirement > applicant.CGPA {
+	if el.requirement >= applicant.CGPA {
 		return false
 	} else {
 		return true
