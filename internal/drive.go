@@ -36,9 +36,9 @@ type Eligibility struct {
 	requirement float64
 }
 
-func (el Eligibility) checkEligibility(applicant *Applicant) bool {
-	panic("unimplemented")
-}
+// func (el Eligibility) checkEligibility(applicant *Applicant) bool {
+// 	panic("unimplemented")
+// }
 
 // Drive struct
 type Drive struct {

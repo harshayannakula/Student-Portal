@@ -35,8 +35,8 @@ type FullPlacementReport struct {
 
 func (pr PlacementRegistrar) GenerateReportByDrive() ReportByDrive {
 	var reportByDrive ReportByDrive
-	for _, c := range(pr.companies){
-		for _, d := range(c.Drives()){
+	for _, c := range pr.companies {
+		for _, d := range c.Drives() {
 			reportByDrive.company = c
 			reportByDrive.drive = d
 			reportByDrive.driveCTC = d.CTC()

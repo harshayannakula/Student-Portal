@@ -25,8 +25,7 @@ func (r *Registrar) Enroll(e Enrollment) {
 	r.enrollments = append(r.enrollments, e)
 }
 
-
-func (r *Registrar) SetGrader(courseID int, g Grader){
+func (r *Registrar) SetGrader(courseID int, g Grader) {
 	for i, e := range r.enrollments {
 		if e.Course.Id == courseID {
 			r.enrollments[i].Grader = g
@@ -38,9 +37,8 @@ func (r *Registrar) Enrollments() []Enrollment {
 	return r.enrollments
 }
 
-
-type StudentData struct{
-	ID int `json:"id"`
+type StudentData struct {
+	ID   int    `json:"id"`
 	Name string `json:"name"`
 }
 
@@ -65,23 +63,22 @@ func (regis *Registrar) LoadCourses() {
 	}
 }
 
-
 func (r *Registrar) LoadStudents() {
-    var students []StudentData
-    data, err := os.ReadFile("students.json")
-    if err != nil {
-        log.Fatal("Failed to read students.json:", err)
-    }
-    
-    err = json.Unmarshal(data, &students)
-    if err != nil {
-        log.Fatal("Failed to unmarshal students:", err)
-    }
-    r.students = make([]Student, 0, len(students))
-    for _, sd := range students {
-	    student := NewStudent(sd.ID, sd.Name)
-	    r.AddStudent(student)
-    }
+	var students []StudentData
+	data, err := os.ReadFile("students.json")
+	if err != nil {
+		log.Fatal("Failed to read students.json:", err)
+	}
+
+	err = json.Unmarshal(data, &students)
+	if err != nil {
+		log.Fatal("Failed to unmarshal students:", err)
+	}
+	r.students = make([]Student, 0, len(students))
+	for _, sd := range students {
+		student := NewStudent(sd.ID, sd.Name)
+		r.AddStudent(student)
+	}
 }
 
 func (r *Registrar) DisplayStudents() {

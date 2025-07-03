@@ -6,6 +6,13 @@ type Company struct {
 	drives []*Drive
 }
 
+func NewCompany(id int, name string) *Company {
+	return &Company{
+		id:   id,
+		name: name,
+	}
+}
+
 func (c *Company) ID() int {
 	return c.id
 }

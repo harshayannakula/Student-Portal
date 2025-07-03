@@ -8,7 +8,7 @@ type Applicant struct {
 	Student
 	AcademicRecord
 	drivesAppliedFor []*Drive
-	offersRecived []*Drive
+	offersRecived    []*Drive
 }
 
 func NewApplicant(st Student, ar AcademicRecord) *Applicant {
@@ -19,7 +19,7 @@ func (a *Applicant) getAllRecivedOffersDrivesAndApplications() ([]*Drive, []*App
 	var drarr []*Drive
 	var pparr []*Application
 	for _, d := range a.drivesAppliedFor {
-		for _, app := range d.applications{
+		for _, app := range d.applications {
 			if app.Status() == Selected && app.Applicant.ID() == a.ID() {
 				drarr = append(drarr, d)
 				pparr = append(pparr, app)
@@ -29,8 +29,8 @@ func (a *Applicant) getAllRecivedOffersDrivesAndApplications() ([]*Drive, []*App
 	return drarr, pparr
 }
 
-func (a* Applicant) getFinalOffer() (int, error) {
-	drArr , _ :=a.getAllRecivedOffersDrivesAndApplications()
+func (a *Applicant) getFinalOffer() (int, error) {
+	drArr, _ := a.getAllRecivedOffersDrivesAndApplications()
 	if len(drArr) == 0 {
 		return drArr[0].CTC(), nil
 	} else {

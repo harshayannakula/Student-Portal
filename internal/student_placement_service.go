@@ -62,6 +62,12 @@ func (s *StudentPlacementService) CompaniesApplied() interface{} {
 
 }
 
+// Function (Method) to view a particular offer details like CTC, Rolename, Category like Dream, Super Dream
+func (s *StudentPlacementService) ViewOfferDetails(companyname string, driveid int) {
+	fmt.Printf("The offer details are as follows \n  CTC:%d, Rolename:%s, Category:%s", s.drive.ctc, s.drive.roleName, s.drive.jobCategory)
+}
+
+// Register/Apply for a Placement Drive
 func (s *StudentPlacementService) Apply() error {
 	err := s.PlacementRegistrar.ApplyForDrive(s.student.id, s.Company.ID(), s.drive.id)
 	return err
@@ -70,6 +76,17 @@ func (s *StudentPlacementService) Apply() error {
 // GetDrive returns the drive associated with this placement service.
 func (s *StudentPlacementService) GetDrive() Drive {
 	return s.drive
+}
+
+// Here i am trying to view the shortlisted status i.e the status after shortlisting
+func (s *StudentPlacementService) ViewShortlistStatus(id int) {
+	applications := s.drive.getShortlistedApplications()
+	for _, v := range applications {
+		if v.id == id {
+			fmt.Println("You just got shortlisted,prepare yourself for further rounds")
+		}
+	}
+
 }
 
 //TO-DO function to give students notifications related to new drives and results etc.
