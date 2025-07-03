@@ -20,6 +20,24 @@ type NewRegistrar struct {
 	enroll     []Enrollnew
 }
 
+type RegistrarWithDocs struct {
+	*NewRegistrar
+	enrollWithDocs []EnrollnewWithDocs
+}
+
+func (r *RegistrarWithDocs) EnrollnewWithDocs(e EnrollnewWithDocs) {
+	r.enrollWithDocs = append(r.enrollWithDocs, e)
+}
+
+func (r *RegistrarWithDocs) DisplayDocuments() {
+	for _, e := range r.enrollWithDocs {
+		fmt.Printf("Student: %s (ID %d)\n", e.Student.Name(), e.Student.ID())
+		for _, doc := range e.Documents {
+			fmt.Printf(" - %s (%s)\n", doc.Title, doc.Filename)
+		}
+	}
+}
+
 func (r *NewRegistrar) AddTeacher(t Teacher) {
 	r.teacher = append(r.teacher, t)
 }

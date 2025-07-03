@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
-	"oops/main/infrastructure"
-	"oops/main/internal"
+	"Student-portal/internal"
+	"Student-portal/infrastructure"
+
+	// "oops/main/internal/admin"
 )
 
 var courseResults []internal.CourseResult
@@ -22,6 +24,13 @@ func main() {
 	fmt.Println("======================")
 	fmt.Println()
 
-	fmt.Print(courseResults)
+	// Teacher 2 views Bob
+	ts2 := &internal.TeacherService{
+		Teacher:   teacher2,
+		Registrar: registrar,
+	}
+	fmt.Println("Teacher:", teacher2.Name)
+	ts2.DisplayAttendance(102, 1002)
+	fmt.Println()
 }
 

@@ -3,7 +3,7 @@ package infrastructure
 import (
 	"encoding/csv"
 	"fmt"
-	"oops/main/internal"
+	"Student-portal/internal"
 	"os"
 	"strconv"
 )

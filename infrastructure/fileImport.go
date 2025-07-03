@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"oops/main/internal"
+	"Student-portal/internal"
 	"os"
 )
 
