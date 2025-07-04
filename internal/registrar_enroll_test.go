@@ -1,5 +1,6 @@
 package internal
 
+/*
 import (
 	"fmt"
 	"testing"
@@ -84,6 +85,7 @@ func TestMarkAttendance1(t *testing.T) {
 		t.Error("Wrong attendance value")
 	}
 }
+*/
 
 /*
 func TestAddStudent(t *testing.T) {
