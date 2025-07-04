@@ -16,8 +16,8 @@ type Registrar struct {
 type NewRegistrar struct {
 	Registrar
 	teacher    []Teacher
-	teachermap []Teacherenrollment
-	enroll     []Enrollnew
+	teachermap []TeacherEnrollment
+	enroll     []EnrollNew
 }
 
 type RegistrarWithDocs struct {
@@ -42,7 +42,7 @@ func (r *NewRegistrar) AddTeacher(t Teacher) {
 	r.teacher = append(r.teacher, t)
 }
 
-func (r *NewRegistrar) AddTeacherenrollment(te Teacherenrollment) {
+func (r *NewRegistrar) AddTeacherenrollment(te TeacherEnrollment) {
 	r.teachermap = append(r.teachermap, te)
 }
 
@@ -58,7 +58,7 @@ func (r *Registrar) Enroll(e Enrollment) {
 	r.enrollments = append(r.enrollments, e)
 }
 
-func (r *NewRegistrar) Enrollnew(e Enrollnew) {
+func (r *NewRegistrar) Enrollnew(e EnrollNew) {
 	r.enroll = append(r.enroll, e)
 }
 
