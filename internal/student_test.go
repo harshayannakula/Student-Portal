@@ -156,7 +156,7 @@ func TestStudentPlacementService(t *testing.T) {
 	drive := NewDrive(
 		time.Now(), time.Now().Add(24*time.Hour), "Engineer", 8.0, 1000000, Day,
 	)
-	company := NewCompany(1, "TestCorp")
+	company := NewCompanyForStudent(1, "TestCorp")
 	company.drives = []*Drive{drive}
 
 	// Create a placement registrar with the company and applicant

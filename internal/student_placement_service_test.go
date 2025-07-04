@@ -10,7 +10,7 @@ func createTestPlacementService() *StudentPlacementService {
 	ar := AcademicRecord{StudentId: 1, CGPA: 9.0}
 	applicant := Applicant{Student: student, AcademicRecord: ar}
 	drive := NewDrive(time.Now(), time.Now().Add(24*time.Hour), "Engineer", 8.0, 1000000, Day)
-	company := NewCompany(1, "TestCorp")
+	company := NewCompanyForStudent(123, "TestCorp")
 	company.drives = []*Drive{drive}
 	pr := PlacementRegistrar{
 		companies:    []*Company{company},
