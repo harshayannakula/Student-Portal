@@ -77,7 +77,7 @@ func (ts *TeacherService) GetCourseResults(courseID int) ([]StudentResult, error
         }
     }
     if len(results) == 0 {
-        return nil, fmt.Errorf("no students found for course %d and teacher %d\n", courseID, ts.Teacher.TID())
+        return nil, fmt.Errorf("no students found for course %d and teacher %s", courseID, ts.Teacher.TID())
     }
     return results, nil
 }
