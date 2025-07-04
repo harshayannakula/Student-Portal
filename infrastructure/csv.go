@@ -8,6 +8,9 @@ import (
 	"strconv"
 )
 
+var deanListStudents []internal.AcademicRecord
+var atRiskStudents []internal.AcademicRecord
+
 func ExportTranscript(path string, list []internal.Enrollment) error {
 	file, err := os.Create(path)
 	if err != nil {
@@ -26,13 +29,8 @@ func ExportTranscript(path string, list []internal.Enrollment) error {
 	return w.Error()
 }
 
-func hello(){
-	var atRiskStudents []internal.AcademicRecord
-	fmt.Print(atRiskStudents)
-}
-
 func ExportAtRiskStudents(path string, internal []internal.AcademicRecord) error {
-	var atRiskStudents []internal.AcademicRecord
+
 	for _, student := range internal {
 		if student.Status == "At Risk" {
 			atRiskStudents = append(atRiskStudents, student)
@@ -41,8 +39,8 @@ func ExportAtRiskStudents(path string, internal []internal.AcademicRecord) error
 	return ExportSummaryReport(path, atRiskStudents)
 }
 
-func ExportDeanListStudents(path string, internal []domain.StudentRecord) error {
-	var deanListStudents []domain.StudentRecord
+func ExportDeanListStudents(path string, internal []internal.AcademicRecord) error {
+
 	for _, student := range internal {
 		if student.Status == "Dean's List" {
 			deanListStudents = append(deanListStudents, student)
@@ -51,7 +49,7 @@ func ExportDeanListStudents(path string, internal []domain.StudentRecord) error 
 	return ExportSummaryReport(path, deanListStudents)
 }
 
-func ExportSummaryReport(path string, internal []students.AcademicRecord) error {
+func ExportSummaryReport(path string, internal []internal.AcademicRecord) error {
 	file, err := os.Create(path)
 	if err != nil {
 		return err
@@ -68,10 +66,10 @@ func ExportSummaryReport(path string, internal []students.AcademicRecord) error 
 
 	for _, student := range internal {
 		record := []string{
-			strconv.Itoa(student.Student.ID()),
-			student.Student.Name(),
+			strconv.Itoa(student.StudentId),
+			//student.Student.Name(),
 			strconv.Itoa(len(student.Semesters)),
-			fmt.Sprintf("%.2f", student.OverallGPA),
+			fmt.Sprintf("%.2f", student.CGPA),
 			student.Status,
 		}
 		if err := w.Write(record); err != nil {
