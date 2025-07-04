@@ -40,7 +40,7 @@ func (a *Applicant) getFinalOffer() (int, error) {
 }
 
 func (a *Applicant) DrivesAppliedFor() []*Drive {
-	/*  */ return a.drivesAppliedFor
+	return a.drivesAppliedFor
 }
 
 func (a *Applicant) AddDrivesAppliedFor(drive *Drive) {
