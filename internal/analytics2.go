@@ -2,6 +2,7 @@ package internal
 
 import (
 	"encoding/json"
+	"fmt"
 	"gonum.org/v1/plot"
 	"gonum.org/v1/plot/plotter"
 	"gonum.org/v1/plot/plotutil"
@@ -49,32 +50,55 @@ func exportFilteredGPAChart(courseResultsFile, studentsFile, outputFile string, 
 	if err := json.Unmarshal(sData, &studentRaw); err != nil {
 		return err
 	}
-
 	students := map[int]string{}
 	for _, s := range studentRaw {
 		students[s.ID] = s.Name
 	}
 
-	// Build academic records
-	records := map[int]*AcademicRecord{}
-	for _, cr := range courseResults {
-		if _, ok := records[cr.StudentId]; !ok {
-			records[cr.StudentId] = NewAcademicRecord(cr.StudentId)
-		}
-		records[cr.StudentId].AddResult(cr, cr.Semester)
+	// Step 1: Accumulate grade points per student
+	type agg struct {
+		totalPoints  float64
+		totalCredits float64
+	}
+	scoreMap := map[int]*agg{}
+
+	gradePoints := map[string]float64{
+		"O":  10.0,
+		"A+": 9.0,
+		"A":  8.0,
+		"B+": 7.0,
+		"B":  6.0,
+		"C":  5.0,
+		"F":  0.0,
 	}
 
-	// Filter and collect eligible students
+	for _, cr := range courseResults {
+		gp, ok := gradePoints[cr.Grade.String()]
+		if !ok {
+			continue
+		}
+		if _, exists := scoreMap[cr.StudentId]; !exists {
+			scoreMap[cr.StudentId] = &agg{}
+		}
+		scoreMap[cr.StudentId].totalPoints += gp * cr.Credits
+		scoreMap[cr.StudentId].totalCredits += cr.Credits
+	}
+
+	// Step 2: Apply filter and collect data
 	type record struct {
 		Name string
 		GPA  float64
 	}
 	var selected []record
-	for id, rec := range records {
-		if filter(rec.CGPA) {
+	for id, data := range scoreMap {
+		if data.totalCredits == 0 {
+			continue
+		}
+		gpa := data.totalPoints / data.totalCredits
+		if filter(gpa) {
 			selected = append(selected, record{
 				Name: students[id],
-				GPA:  rec.CGPA,
+				GPA:  gpa,
 			})
 		}
 	}
@@ -101,6 +125,10 @@ func exportFilteredGPAChart(courseResultsFile, studentsFile, outputFile string, 
 	for i, s := range selected {
 		labels[i] = s.Name
 		values[i] = s.GPA
+	}
+
+	if len(selected) == 0 {
+		return fmt.Errorf("plotter: no data points (no students matched filter)")
 	}
 
 	bars, err := plotter.NewBarChart(values, vg.Points(25))
