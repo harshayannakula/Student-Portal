@@ -6,10 +6,13 @@ type Company struct {
 	drives []*Drive
 }
 
-func NewCompanyForStudent(id int, name string) *Company {
+var newID = SeqID()
+
+func NewCompany(name string) *Company {
 	return &Company{
-		id:   id,
-		name: name,
+		id:     newID(),
+		name:   name,
+		drives: make([]*Drive, 0),
 	}
 }
 
