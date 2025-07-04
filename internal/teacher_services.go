@@ -9,8 +9,7 @@ import (
 type TeacherService struct {
 	Registrar *RegistrarWithDocs
 	Teacher   Teacher
-	
-``}
+}
 
 func (ts *TeacherService) DisplayAttendance(courseID int, studentID int) {
 	for _, e := range ts.Registrar.enroll {
