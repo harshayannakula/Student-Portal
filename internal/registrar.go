@@ -1,10 +1,11 @@
-package admin
+package internal
 
 import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"oops/main/internal"
+
+	//"oops/main/internal"
 
 	//"oops/main/analytics"
 	//"oops/main/domain"
@@ -12,29 +13,29 @@ import (
 )
 
 type Registrar struct {
-	students    []internal.Student
-	courses     []internal.Course
-	enrollments []internal.Enrollment
-	graders     map[int]internal.Grader
+	students    []Student
+	courses     []Course
+	enrollments []Enrollment
+	graders     map[int]Grader
 }
 
 func NewRegistrar() *Registrar {
-	return &Registrar{graders: make(map[int]internal.Grader)}
+	return &Registrar{graders: make(map[int]Grader)}
 }
 
-func (r *Registrar) AddStudent(s internal.Student) {
+func (r *Registrar) AddStudent(s Student) {
 	r.students = append(r.students, s)
 }
 
-func (r *Registrar) AddCourse(c internal.Course) {
+func (r *Registrar) AddCourse(c Course) {
 	r.courses = append(r.courses, c)
 }
 
-func (r *Registrar) Enroll(e internal.Enrollment) {
+func (r *Registrar) Enroll(e Enrollment) {
 	r.enrollments = append(r.enrollments, e)
 }
 
-func (r *Registrar) SetGrader(courseID int, g internal.Grader) {
+func (r *Registrar) SetGrader(courseID int, g Grader) {
 	for i, e := range r.enrollments {
 		if e.Course.Id == courseID {
 			r.enrollments[i].Grader = g
@@ -42,7 +43,7 @@ func (r *Registrar) SetGrader(courseID int, g internal.Grader) {
 	}
 }
 
-func (r *Registrar) Enrollments() []internal.Enrollment {
+func (r *Registrar) Enrollments() []Enrollment {
 	return r.enrollments
 }
 
@@ -68,7 +69,7 @@ func (regis *Registrar) LoadCourses() {
 		log.Fatal("Failed to unmarshal courses:", err)
 	}
 	for _, course := range coursesData {
-		regis.AddCourse(internal.NewCourse(course.ID, course.Name))
+		regis.AddCourse(NewCourse(course.ID, course.Name))
 	}
 }
 
@@ -83,9 +84,9 @@ func (r *Registrar) LoadStudents() {
 	if err != nil {
 		log.Fatal("Failed to unmarshal students:", err)
 	}
-	r.students = make([]internal.Student, 0, len(students))
+	r.students = make([]Student, 0, len(students))
 	for _, sd := range students {
-		student := internal.NewStudent(sd.ID, sd.Name)
+		student := NewStudent(sd.ID, sd.Name)
 		r.AddStudent(student)
 	}
 }
