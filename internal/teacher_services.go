@@ -56,7 +56,7 @@ func (ts *TeacherService) UploadStudentMarksFromJSON(jsonData []byte) error {
 	}
 
 	if len(errs) > 0 {
-		return errors.New("errors occurred: " + fmt.Sprint(errs))
+		return errors.New("Errors occurred: " + fmt.Sprint(errs))
 	}
 	return nil
 }

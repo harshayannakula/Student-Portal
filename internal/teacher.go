@@ -12,7 +12,7 @@ func (t Teacher) TID() string {
 	return t.ID
 }
 
-// Optional: Constructor for consistency
+//Constructor for consistency
 func NewTeacher(id, name string) Teacher {
 	return Teacher{
 		ID:   id,

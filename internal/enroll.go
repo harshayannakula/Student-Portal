@@ -43,9 +43,9 @@ func NewEnrollment(st Student, c Course, g Grader, score float64) Enrollment {
 	return Enrollment{Student: st, Course: c, Grader: g, score: score}
 }
 
-func enrollnew(st Student, c Course, g Grader, score float64, attend Attendance, t Teacher) Enrollnew {
-	return Enrollnew{Enrollment: Enrollment{Student: st, Course: c, Grader: g, score: score}, Attend: attend, Teacher: t}
-}
+// func enrollnew(st Student, c Course, g Grader, score float64, attend Attendance, t Teacher) Enrollnew {
+// 	return Enrollnew{Enrollment: Enrollment{Student: st, Course: c, Grader: g, score: score}, Attend: attend, Teacher: t}
+// }
 
 func (e Enrollment) String() string {
 	r, _ := e.Grade(e)
