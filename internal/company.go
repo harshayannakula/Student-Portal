@@ -1,19 +1,16 @@
 package internal
 
+var newID = SeqID()
+
 type Company struct {
 	id     int
 	name   string
 	drives []*Drive
 }
 
-var newID = SeqID()
-
 func NewCompany(name string) *Company {
-	return &Company{
-		id:     newID(),
-		name:   name,
-		drives: make([]*Drive, 0),
-	}
+	return &Company{id: newID(), name: name, drives: make([]*Drive, 0)}
+
 }
 
 func (c *Company) ID() int {

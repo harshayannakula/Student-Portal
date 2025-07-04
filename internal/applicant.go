@@ -8,14 +8,15 @@ type Applicant struct {
 	Student
 	AcademicRecord
 	drivesAppliedFor []*Drive
-	offersRecived    []*Drive
+	offersReceived   []*Drive
+
 }
 
 func NewApplicant(st Student, ar AcademicRecord) *Applicant {
-	return &Applicant{Student: st, AcademicRecord: ar}
+	return &Applicant{Student: st, AcademicRecord: ar, drivesAppliedFor: make([]*Drive, 0), offersReceived: make([]*Drive, 0)}
 }
 
-func (a *Applicant) getAllRecivedOffersDrivesAndApplications() ([]*Drive, []*Application) {
+func (a *Applicant) getAllReceivedOffersDrivesAndApplications() ([]*Drive, []*Application) {
 	var drarr []*Drive
 	var pparr []*Application
 	for _, d := range a.drivesAppliedFor {
@@ -30,11 +31,11 @@ func (a *Applicant) getAllRecivedOffersDrivesAndApplications() ([]*Drive, []*App
 }
 
 func (a *Applicant) getFinalOffer() (int, error) {
-	drArr, _ := a.getAllRecivedOffersDrivesAndApplications()
+	drArr, _ := a.getAllReceivedOffersDrivesAndApplications()
 	if len(drArr) == 0 {
-		return drArr[0].CTC(), nil
-	} else {
 		return -1, fmt.Errorf("no offers yet")
+	} else {
+		return drArr[0].CTC(), nil
 	}
 }
 
