@@ -117,7 +117,7 @@ func TestSerializeStudents(t *testing.T) {
 
 	err := SerializeStudents("students.json", students) // No return value, just ensure no panic
 	if err != nil {
-		log.Fatal("Could not create the json ")
+		t.Fatalf("Could not create the json: %v", err)
 	}
 }
 
