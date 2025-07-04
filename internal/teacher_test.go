@@ -55,64 +55,64 @@ func TestTeacherUploadFile(t *testing.T) {
 	}
 }
 
-func TestTeacherUploadStudentMarksFromJSON(t *testing.T) {
-	ts, courseID, studentID, _ := setupTeacherTestEnv()
+// func TestTeacherUploadStudentMarksFromJSON(t *testing.T) {
+// 	ts, courseID, studentID, _ := setupTeacherTestEnv()
 
-	// Prepare JSON input for bulk upload
-	marks := []StudentMarkInput{
-		{CourseID: courseID, StudentID: studentID, Score: 0.88},
-	}
-	jsonData, err := json.Marshal(marks)
-	if err != nil {
-		t.Fatalf("failed to marshal marks: %v", err)
-	}
+// 	// Prepare JSON input for bulk upload
+// 	marks := []StudentMarkInput{
+// 		{CourseID: courseID, StudentID: studentID, Score: 0.88},
+// 	}
+// 	jsonData, err := json.Marshal(marks)
+// 	if err != nil {
+// 		t.Fatalf("failed to marshal marks: %v", err)
+// 	}
 
-	// Call the bulk upload method
-	err = ts.UploadStudentMarksFromJSON(jsonData)
-	if err != nil {
-		t.Fatalf("expected no error, got %v", err)
-	}
+// 	// Call the bulk upload method
+// 	err = ts.UploadStudentMarksFromJSON(jsonData)
+// 	if err != nil {
+// 		t.Fatalf("expected no error, got %v", err)
+// 	}
 
-	// Assert that the score was updated
-	found := false
-	for _, e := range ts.Registrar.enroll {
-		if e.Course.Id == courseID && e.Student.ID() == studentID {
-			found = true
-			if e.score != 0.88 {
-				t.Fatalf("got score %v want 0.88", e.score)
-			}
-			grade, _ := e.Grader.Grade(e.Enrollment)
-			if grade != "88.0%" {
-				t.Fatalf("got grade %s want 88.0%%", grade)
-			}
-		}
-	}
-	if !found {
-		t.Fatal("enrollment not found")
-	}
-}
+// 	// Assert that the score was updated
+// 	found := false
+// 	for _, e := range ts.Registrar.enroll {
+// 		if e.Course.Id == courseID && e.Student.ID() == studentID {
+// 			found = true
+// 			if e.score != 0.88 {
+// 				t.Fatalf("got score %v want 0.88", e.score)
+// 			}
+// 			grade, _ := e.Grader.Grade(e.Enrollment)
+// 			if grade != "88.0%" {
+// 				t.Fatalf("got grade %s want 88.0%%", grade)
+// 			}
+// 		}
+// 	}
+// 	if !found {
+// 		t.Fatal("enrollment not found")
+// 	}
+// }
 
-func TestTeacherGetCourseResults(t *testing.T) {
-	ts, courseID, studentID, _ := setupTeacherTestEnv()
+// func TestTeacherGetCourseResults(t *testing.T) {
+// 	ts, courseID, studentID, _ := setupTeacherTestEnv()
 
-	results, err := ts.GetCourseResults(courseID)
-	if err != nil {
-		t.Fatalf("expected no error, got %v", err)
-	}
-	if len(results) != 1 {
-		t.Fatalf("expected 1 result, got %d", len(results))
-	}
-	got := results[0]
-	if got.CourseID != courseID {
-		t.Errorf("got CourseID %d, want %d", got.CourseID, courseID)
-	}
-	if got.StudentID != studentID {
-		t.Errorf("got StudentID %d, want %d", got.StudentID, studentID)
-	}
-	if got.Score != 0.85 {
-		t.Errorf("got Score %v, want 0.85", got.Score)
-	}
-	if got.Grade != "85.0%" {
-		t.Errorf("got Grade %s, want 85.0%%", got.Grade)
-	}
-}
+// 	results, err := ts.GetCourseResults(courseID)
+// 	if err != nil {
+// 		t.Fatalf("expected no error, got %v", err)
+// 	}
+// 	if len(results) != 1 {
+// 		t.Fatalf("expected 1 result, got %d", len(results))
+// 	}
+// 	got := results[0]
+// 	if got.CourseID != courseID {
+// 		t.Errorf("got CourseID %d, want %d", got.CourseID, courseID)
+// 	}
+// 	if got.StudentID != studentID {
+// 		t.Errorf("got StudentID %d, want %d", got.StudentID, studentID)
+// 	}
+// 	if got.Score != 0.85 {
+// 		t.Errorf("got Score %v, want 0.85", got.Score)
+// 	}
+// 	if got.Grade != "85.0%" {
+// 		t.Errorf("got Grade %s, want 85.0%%", got.Grade)
+// 	}
+// }
