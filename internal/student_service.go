@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"errors"
 
-	"log"
 	"os"
 )
 
@@ -55,7 +54,6 @@ func SerializeStudents(filename string, students []Student) error {
 
 	file, err := os.Create(filename)
 	if err != nil {
-		log.Fatal("Error creating the json file ")
 		return err
 	}
 
@@ -63,7 +61,6 @@ func SerializeStudents(filename string, students []Student) error {
 	err = encoder.Encode(students)
 
 	if err != nil {
-		log.Fatal("Error writing to the json")
 		return err
 	}
 	return nil
