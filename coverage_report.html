@@ -1,0 +1,679 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>internal: Go Coverage Report</title>
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">oops/main/internal/analytics1.go (89.9%)</option>
+				
+				<option value="file1">oops/main/internal/analytics2.go (88.2%)</option>
+				
+				<option value="file2">oops/main/internal/analytics3.go (91.9%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">not covered</span>
+				<span class="cov8">covered</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package internal
+
+import (
+        "encoding/json"
+        "fmt"
+        "gonum.org/v1/plot"
+        "gonum.org/v1/plot/plotter"
+        "gonum.org/v1/plot/plotutil"
+        "gonum.org/v1/plot/vg"
+        "os"
+)
+
+func GenerateGPAHistogramFromFiles(courseResultsFile, studentsFile string) (map[string]int, error) <span class="cov8" title="1">{
+        // Step 1: Read and parse courseResults.json
+        var courseResults []CourseResult
+        cData, err := os.ReadFile(courseResultsFile)
+        if err != nil </span><span class="cov8" title="1">{
+                return nil, err
+        }</span>
+        <span class="cov8" title="1">if err := json.Unmarshal(cData, &amp;courseResults); err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        // Step 2: Read and parse students.json
+        <span class="cov8" title="1">type studentData struct {
+                ID   int    `json:"id"`
+                Name string `json:"name"`
+        }
+        var studentRaw []studentData
+        sData, err := os.ReadFile(studentsFile)
+        if err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+        <span class="cov8" title="1">if err := json.Unmarshal(sData, &amp;studentRaw); err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+
+        // Step 3: Build student map for name lookup
+        <span class="cov8" title="1">students := map[int]Student{}
+        for _, s := range studentRaw </span><span class="cov8" title="1">{
+                students[s.ID] = NewStudent(s.ID, s.Name)
+        }</span>
+
+        // Step 4: Build academic records
+        <span class="cov8" title="1">records := map[int]*AcademicRecord{}
+        for _, cr := range courseResults </span><span class="cov8" title="1">{
+                if _, exists := records[cr.StudentId]; !exists </span><span class="cov8" title="1">{
+                        records[cr.StudentId] = NewAcademicRecord(cr.StudentId)
+                }</span>
+                <span class="cov8" title="1">records[cr.StudentId].AddResult(cr, cr.Semester)</span>
+        }
+
+        // Step 5: Set Status and attach Name
+        <span class="cov8" title="1">for _, record := range records </span><span class="cov8" title="1">{
+                record.Status = NewGPACalculator().DetermineStatus(record.CGPA)
+                // optional: assign Name if needed later
+        }</span>
+
+        // Step 6: Create histogram
+        <span class="cov8" title="1">hist := map[string]int{}
+        for _, record := range records </span><span class="cov8" title="1">{
+                bucket := getGPABucket(record.CGPA)
+                hist[bucket]++
+        }</span>
+
+        <span class="cov8" title="1">return hist, nil</span>
+}
+func getGPABucket(gpa float64) string <span class="cov8" title="1">{
+        switch </span>{
+        case gpa &lt; 4.0:<span class="cov8" title="1">
+                return "&lt;4"</span>
+        case gpa &lt; 5.0:<span class="cov8" title="1">
+                return "4–4.9"</span>
+        case gpa &lt; 6.0:<span class="cov8" title="1">
+                return "5–5.9"</span>
+        case gpa &lt; 7.0:<span class="cov8" title="1">
+                return "6–6.9"</span>
+        case gpa &lt; 8.0:<span class="cov8" title="1">
+                return "7–7.9"</span>
+        case gpa &lt; 9.0:<span class="cov8" title="1">
+                return "8–8.9"</span>
+        default:<span class="cov8" title="1">
+                return "9–10"</span>
+        }
+}
+func ExportGPAHistogramChart(hist map[string]int, filename string) error <span class="cov8" title="1">{
+        p := plot.New()
+        p.Title.Text = "GPA Distribution Histogram"
+        p.Title.TextStyle.Font.Size = vg.Points(14)
+        p.X.Label.Text = "GPA Range"
+        p.Y.Label.Text = "Number of Students"
+        p.X.Label.TextStyle.Font.Size = vg.Points(12)
+        p.Y.Label.TextStyle.Font.Size = vg.Points(12)
+        p.Add(plotter.NewGrid())
+
+        // Predefined ordered GPA bucket labels
+        labels := []string{"&lt;4", "4–4.9", "5–5.9", "6–6.9", "7–7.9", "8–8.9", "9–10"}
+        values := make(plotter.Values, len(labels))
+        for i, label := range labels </span><span class="cov8" title="1">{
+                values[i] = float64(hist[label]) // defaults to 0 if missing
+        }</span>
+
+        // Draw bar chart
+        <span class="cov8" title="1">bar, err := plotter.NewBarChart(values, vg.Points(30))
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov8" title="1">bar.LineStyle.Width = 0
+        bar.Color = plotutil.Color(1)
+        bar.Offset = vg.Points(5)
+        p.Add(bar)
+        p.NominalX(labels...)
+
+        // Add value labels above each bar
+        for i, v := range values </span><span class="cov8" title="1">{
+                if v &gt; 0 </span><span class="cov8" title="1">{
+                        lbl, err := plotter.NewLabels(plotter.XYLabels{
+                                XYs:    []plotter.XY{{X: float64(i), Y: v + 0.3}},
+                                Labels: []string{fmt.Sprintf("%.0f", v)},
+                        })
+                        if err != nil </span><span class="cov0" title="0">{
+                                return err
+                        }</span>
+                        <span class="cov8" title="1">p.Add(lbl)</span>
+                }
+        }
+        // Save JSON as well
+        <span class="cov8" title="1">jsonData, err := json.MarshalIndent(hist, "", "  ")
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov8" title="1">err = os.WriteFile("gpa_histogram.json", jsonData, 0644)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        <span class="cov8" title="1">return p.Save(10*vg.Inch, 4*vg.Inch, filename)</span>
+}
+</pre>
+		
+		<pre class="file" id="file1" style="display: none">package internal
+
+import (
+        "encoding/json"
+        "fmt"
+        "gonum.org/v1/plot"
+        "gonum.org/v1/plot/plotter"
+        "gonum.org/v1/plot/plotutil"
+        "gonum.org/v1/plot/vg"
+        "os"
+        "sort"
+)
+
+// ExportDeanListChart plots students with GPA &gt; 6
+func ExportDeanListChart(courseResultsFile, studentsFile, outputFile string) error <span class="cov8" title="1">{
+        return exportFilteredGPAChart(courseResultsFile, studentsFile, outputFile, func(gpa float64) bool </span><span class="cov8" title="1">{
+                return gpa &gt; 6.0
+        }</span>, "Dean's List (GPA &gt; 6)")
+}
+
+// ExportAtRiskChart plots students with GPA &lt; 5
+func ExportAtRiskChart(courseResultsFile, studentsFile, outputFile string) error <span class="cov8" title="1">{
+        return exportFilteredGPAChart(courseResultsFile, studentsFile, outputFile, func(gpa float64) bool </span><span class="cov8" title="1">{
+                return gpa &lt; 5.0
+        }</span>, "At-Risk Students (GPA &lt; 5)")
+}
+
+// Helper function to generate student name vs GPA bar chart
+func exportFilteredGPAChart(courseResultsFile, studentsFile, outputFile string, filter func(float64) bool, title string) error <span class="cov8" title="1">{
+        // Load course results
+        var courseResults []CourseResult
+        cData, err := os.ReadFile(courseResultsFile)
+        if err != nil </span><span class="cov8" title="1">{
+                return err
+        }</span>
+        <span class="cov8" title="1">if err := json.Unmarshal(cData, &amp;courseResults); err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        // Load student names
+        <span class="cov8" title="1">type studentData struct {
+                ID   int    `json:"id"`
+                Name string `json:"name"`
+        }
+        var studentRaw []studentData
+        sData, err := os.ReadFile(studentsFile)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov8" title="1">if err := json.Unmarshal(sData, &amp;studentRaw); err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov8" title="1">students := map[int]string{}
+        for _, s := range studentRaw </span><span class="cov8" title="1">{
+                students[s.ID] = s.Name
+        }</span>
+
+        // Step 1: Accumulate grade points per student
+        <span class="cov8" title="1">type agg struct {
+                totalPoints  float64
+                totalCredits float64
+        }
+        scoreMap := map[int]*agg{}
+
+        gradePoints := map[string]float64{
+                "O":  10.0,
+                "A+": 9.0,
+                "A":  8.0,
+                "B+": 7.0,
+                "B":  6.0,
+                "C":  5.0,
+                "F":  0.0,
+        }
+
+        for _, cr := range courseResults </span><span class="cov8" title="1">{
+                gp, ok := gradePoints[cr.Grade.String()]
+                if !ok </span><span class="cov0" title="0">{
+                        continue</span>
+                }
+                <span class="cov8" title="1">if _, exists := scoreMap[cr.StudentId]; !exists </span><span class="cov8" title="1">{
+                        scoreMap[cr.StudentId] = &amp;agg{}
+                }</span>
+                <span class="cov8" title="1">scoreMap[cr.StudentId].totalPoints += gp * cr.Credits
+                scoreMap[cr.StudentId].totalCredits += cr.Credits</span>
+        }
+
+        // Step 2: Apply filter and collect data
+        <span class="cov8" title="1">type record struct {
+                Name string
+                GPA  float64
+        }
+        var selected []record
+        for id, data := range scoreMap </span><span class="cov8" title="1">{
+                if data.totalCredits == 0 </span><span class="cov0" title="0">{
+                        continue</span>
+                }
+                <span class="cov8" title="1">gpa := data.totalPoints / data.totalCredits
+                if filter(gpa) </span><span class="cov8" title="1">{
+                        selected = append(selected, record{
+                                Name: students[id],
+                                GPA:  gpa,
+                        })
+                }</span>
+        }
+
+        // Sort by GPA descending
+        <span class="cov8" title="1">sort.Slice(selected, func(i, j int) bool </span><span class="cov0" title="0">{
+                return selected[i].GPA &gt; selected[j].GPA
+        }</span>)
+
+        // Create chart
+        <span class="cov8" title="1">p := plot.New()
+        p.Title.Text = title
+        p.X.Label.Text = "Students"
+        p.Y.Label.Text = "GPA"
+        p.Title.TextStyle.Font.Size = vg.Points(14)
+        p.X.Label.TextStyle.Font.Size = vg.Points(12)
+        p.Y.Label.TextStyle.Font.Size = vg.Points(12)
+        p.X.Tick.Label.Rotation = 0
+        p.X.Tick.Label.Font.Size = vg.Points(10)
+        p.Add(plotter.NewGrid())
+
+        labels := make([]string, len(selected))
+        values := make(plotter.Values, len(selected))
+        for i, s := range selected </span><span class="cov8" title="1">{
+                labels[i] = s.Name
+                values[i] = s.GPA
+        }</span>
+
+        <span class="cov8" title="1">if len(selected) == 0 </span><span class="cov8" title="1">{
+                return fmt.Errorf("plotter: no data points (no students matched filter)")
+        }</span>
+
+        <span class="cov8" title="1">bars, err := plotter.NewBarChart(values, vg.Points(25))
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov8" title="1">bars.Color = plotutil.Color(3)
+        bars.LineStyle.Width = 0
+        bars.Offset = vg.Points(3)
+        p.Add(bars)
+        p.NominalX(labels...)
+
+        // Save JSON (bar chart data)
+        export := map[string]float64{}
+        for _, s := range selected </span><span class="cov8" title="1">{
+                export[s.Name] = s.GPA
+        }</span>
+        <span class="cov8" title="1">jsonName := outputFile[:len(outputFile)-4] + ".json"
+
+        data, err := json.MarshalIndent(export, "", "  ")
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov8" title="1">if err := os.WriteFile(jsonName, data, 0644); err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        <span class="cov8" title="1">return p.Save(14*vg.Inch, 5*vg.Inch, outputFile)</span>
+}
+</pre>
+		
+		<pre class="file" id="file2" style="display: none">package internal
+
+import (
+        "encoding/json"
+        "gonum.org/v1/plot"
+        "gonum.org/v1/plot/plotter"
+        "gonum.org/v1/plot/vg"
+        "image/color"
+        "os"
+        "sort"
+        "strings"
+)
+
+// PlacementOffer represents a placement offer record
+type PlacementOffer struct {
+        CompanyName string  `json:"CompanyName"`
+        PackageLPA  float64 `json:"PackageLPA"`
+        NumStudents int     `json:"NumStudents"`
+        JobTitle    string  `json:"JobTitle"`
+}
+
+func getCategory(packageLPA float64) string <span class="cov8" title="1">{
+        switch </span>{
+        case packageLPA &gt;= 20:<span class="cov8" title="1">
+                return "marquee"</span>
+        case packageLPA &gt;= 10:<span class="cov8" title="1">
+                return "super_dream"</span>
+        default:<span class="cov8" title="1">
+                return "dream"</span>
+        }
+}
+
+func LoadOffers(filename string) ([]PlacementOffer, error) <span class="cov8" title="1">{
+        bytes, err := os.ReadFile(filename)
+        if err != nil </span><span class="cov8" title="1">{
+                return nil, err
+        }</span>
+
+        <span class="cov8" title="1">var offers []PlacementOffer
+        if err := json.Unmarshal(bytes, &amp;offers); err != nil </span><span class="cov0" title="0">{
+                return nil, err
+        }</span>
+        <span class="cov8" title="1">return offers, nil</span>
+}
+
+func CategorizeOffers(offers []PlacementOffer) map[string][]PlacementOffer <span class="cov8" title="1">{
+        result := map[string][]PlacementOffer{
+                "marquee":     {},
+                "super_dream": {},
+                "dream":       {},
+        }
+        for _, offer := range offers </span><span class="cov8" title="1">{
+                category := getCategory(offer.PackageLPA)
+                result[category] = append(result[category], offer)
+        }</span>
+        <span class="cov8" title="1">return result</span>
+}
+
+func ExportCategorizedOffers(filename string, categorizedOffers map[string][]PlacementOffer) error <span class="cov8" title="1">{
+        data, err := json.MarshalIndent(categorizedOffers, "", "  ")
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov8" title="1">return os.WriteFile(filename, data, 0644)</span>
+}
+
+func ExportPlacementBarChart(inputFile, outputFile string) error <span class="cov8" title="1">{
+        type Offer struct {
+                CompanyName string  `json:"CompanyName"`
+                PackageLPA  float64 `json:"PackageLPA"`
+                NumStudents int     `json:"NumStudents"`
+                JobTitle    string  `json:"JobTitle"`
+        }
+
+        // Load JSON
+        var categorized map[string][]Offer
+        data, err := os.ReadFile(inputFile)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov8" title="1">if err := json.Unmarshal(data, &amp;categorized); err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        // Aggregate: map[company][category]count
+        <span class="cov8" title="1">type CompStat struct {
+                Company string
+                Counts  map[string]int
+        }
+        companiesMap := map[string]*CompStat{}
+        categories := []string{"dream", "super_dream", "marquee"}
+
+        for cat, offers := range categorized </span><span class="cov8" title="1">{
+                for _, offer := range offers </span><span class="cov8" title="1">{
+                        if _, ok := companiesMap[offer.CompanyName]; !ok </span><span class="cov8" title="1">{
+                                companiesMap[offer.CompanyName] = &amp;CompStat{
+                                        Company: offer.CompanyName,
+                                        Counts:  map[string]int{"dream": 0, "super_dream": 0, "marquee": 0},
+                                }
+                        }</span>
+                        <span class="cov8" title="1">companiesMap[offer.CompanyName].Counts[cat] += offer.NumStudents</span>
+                }
+        }
+
+        // Sort companies
+        <span class="cov8" title="1">var companyNames []string
+        for name := range companiesMap </span><span class="cov8" title="1">{
+                companyNames = append(companyNames, name)
+        }</span>
+        <span class="cov8" title="1">sort.Strings(companyNames)
+
+        // Prepare plot
+        p := plot.New()
+        p.Title.Text = "Placement by Company and Category"
+        p.X.Label.Text = "Company"
+        p.Y.Label.Text = "Number of Students"
+        p.X.Label.TextStyle.Font.Size = vg.Points(12)
+        p.Y.Label.TextStyle.Font.Size = vg.Points(12)
+        p.Title.TextStyle.Font.Size = vg.Points(14)
+        p.X.Tick.Label.Rotation = 0
+        p.X.Tick.Label.Font.Size = vg.Points(10)
+
+        //groupWidth := vg.Points(30)
+        barWidth := vg.Points(8)
+        categoryColors := map[string]color.Color{
+                "dream":       color.RGBA{R: 102, G: 187, B: 106, A: 255}, // green
+                "super_dream": color.RGBA{R: 51, G: 153, B: 255, A: 255},  // blue
+                "marquee":     color.RGBA{R: 255, G: 102, B: 102, A: 255}, // red
+        }
+
+        // Each category will have a separate bar plot slice
+        legend := map[string]*plotter.BarChart{}
+        for i, cat := range categories </span><span class="cov8" title="1">{
+                values := make(plotter.Values, len(companyNames))
+                for j, name := range companyNames </span><span class="cov8" title="1">{
+                        values[j] = float64(companiesMap[name].Counts[cat])
+                }</span>
+                <span class="cov8" title="1">bars, err := plotter.NewBarChart(values, barWidth)
+                if err != nil </span><span class="cov0" title="0">{
+                        return err
+                }</span>
+                <span class="cov8" title="1">bars.Color = categoryColors[cat]
+                bars.Offset = barWidth * vg.Length(i-1) // center offset: -1, 0, +1
+                p.Add(bars)
+                p.Legend.Add(strings.Title(strings.ReplaceAll(cat, "_", " ")), bars)
+                legend[cat] = bars</span>
+        }
+
+        // Set ticks
+        <span class="cov8" title="1">p.NominalX(companyNames...)
+
+        p.Legend.Top = true
+        p.Legend.XOffs = -vg.Points(10)
+        p.Legend.YOffs = vg.Points(10)
+        p.Legend.TextStyle.Font.Size = vg.Points(10)
+
+        // Save chart
+        return p.Save(14*vg.Inch, 5*vg.Inch, outputFile)</span>
+}
+
+func ExportCompanySelectionChart(inputFile, outputImage, outputJSON string) error <span class="cov8" title="1">{
+        type Offer struct {
+                CompanyName string  `json:"CompanyName"`
+                PackageLPA  float64 `json:"PackageLPA"`
+                NumStudents int     `json:"NumStudents"`
+                JobTitle    string  `json:"JobTitle"`
+        }
+
+        // Load JSON data
+        var offers []Offer
+        data, err := os.ReadFile(inputFile)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov8" title="1">if err := json.Unmarshal(data, &amp;offers); err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        // Aggregate: map[company] = {totalStudents, totalPackage}
+        <span class="cov8" title="1">type CompanyStat struct {
+                TotalStudents int
+                TotalPackage  float64
+        }
+        stats := map[string]CompanyStat{}
+        for _, offer := range offers </span><span class="cov8" title="1">{
+                stat := stats[offer.CompanyName]
+                stat.TotalStudents += offer.NumStudents
+                stat.TotalPackage += offer.PackageLPA * float64(offer.NumStudents)
+                stats[offer.CompanyName] = stat
+        }</span>
+
+        // Prepare sorted keys and values
+        <span class="cov8" title="1">var companies []string
+        for name := range stats </span><span class="cov8" title="1">{
+                companies = append(companies, name)
+        }</span>
+        <span class="cov8" title="1">sort.Strings(companies)
+
+        nums := make(plotter.Values, len(companies))
+        avgs := make([]float64, len(companies))
+        exportData := map[string]map[string]float64{}
+
+        for i, name := range companies </span><span class="cov8" title="1">{
+                stat := stats[name]
+                nums[i] = float64(stat.TotalStudents)
+                avg := stat.TotalPackage / float64(stat.TotalStudents)
+                avgs[i] = avg
+                exportData[name] = map[string]float64{
+                        "num_students": float64(stat.TotalStudents),
+                        "avg_package":  avg,
+                }
+        }</span>
+
+        // Plotting
+        <span class="cov8" title="1">p := plot.New()
+        p.Title.Text = "Company-wise Selection Metrics"
+        p.X.Label.Text = "Company"
+        p.Y.Label.Text = "Number of Students"
+
+        barChart, err := plotter.NewBarChart(nums, vg.Points(25))
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov8" title="1">barChart.LineStyle.Width = 0
+        barChart.Color = color.RGBA{R: 100, G: 180, B: 255, A: 255}
+        barChart.LineStyle.Width = 0
+        barChart.Offset = vg.Points(0)
+        p.Add(barChart)
+        p.Legend.Add("Number of Students", barChart)
+
+        // Add right Y-axis
+        rightAxis := plot.New()
+        rightAxis.Y.Label.Text = "Average Package (LPA)"
+        rightAxis.Y.Tick.Label.Color = color.RGBA{R: 255, G: 80, B: 80, A: 255}
+
+        // Plot line for average package
+        linePoints := make(plotter.XYs, len(companies))
+        for i := range companies </span><span class="cov8" title="1">{
+                linePoints[i].X = float64(i)
+                linePoints[i].Y = avgs[i]
+        }</span>
+        <span class="cov8" title="1">line, err := plotter.NewLine(linePoints)
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov8" title="1">line.Color = color.RGBA{R: 255, G: 80, B: 80, A: 255}
+        line.Width = vg.Points(2)
+        p.Add(line)
+        p.Legend.Add("Average Package (LPA)", line)
+        p.NominalX(companies...)
+
+        line.Color = color.RGBA{R: 255, G: 80, B: 80, A: 255}
+        p.Add(line)
+        p.Legend.Top = true
+        p.Legend.XOffs = -vg.Points(10)
+        p.Legend.YOffs = vg.Points(10)
+        p.Legend.TextStyle.Font.Size = vg.Points(10)
+
+        // Save image
+        if err := p.Save(14*vg.Inch, 5*vg.Inch, outputImage); err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        // Save JSON
+        <span class="cov8" title="1">jsonBytes, err := json.MarshalIndent(exportData, "", "  ")
+        if err != nil </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov8" title="1">return os.WriteFile(outputJSON, jsonBytes, 0644)</span>
+}
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>
