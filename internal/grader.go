@@ -23,3 +23,20 @@ func (p PassFailGrader) Grade(e Enrollment) (string, error) {
 		return "FAIL", nil
 	}
 }
+
+type LetterGrader struct{}
+
+func (LetterGrader) Grade(e Enrollment) (string, error) {
+	switch {
+	case e.score >= 9.0:
+		return "A", nil
+	case e.score >= 8.0:
+		return "B", nil
+	case e.score >= 7.0:
+		return "C", nil
+	case e.score >= 6.0:
+		return "D", nil
+	default:
+		return "F", nil
+	}
+}

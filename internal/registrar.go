@@ -23,6 +23,39 @@ func NewRegistrar() *Registrar {
 	return &Registrar{graders: make(map[int]Grader)}
 }
 
+type NewRegistrar struct {
+	Registrar
+	teacher    []Teacher
+	teachermap []TeacherEnrollment
+	enroll     []EnrollNew
+}
+
+type RegistrarWithDocs struct {
+	*NewRegistrar
+	enrollWithDocs []EnrollnewWithDocs
+}
+
+func (r *RegistrarWithDocs) EnrollnewWithDocs(e EnrollnewWithDocs) {
+	r.enrollWithDocs = append(r.enrollWithDocs, e)
+}
+
+func (r *RegistrarWithDocs) DisplayDocuments() {
+	for _, e := range r.enrollWithDocs {
+		fmt.Printf("Student: %s (ID %d)\n", e.Student.Name(), e.Student.ID())
+		for _, doc := range e.Documents {
+			fmt.Printf(" - %s (%s)\n", doc.Title, doc.Filename)
+		}
+	}
+}
+
+func (r *NewRegistrar) AddTeacher(t Teacher) {
+	r.teacher = append(r.teacher, t)
+}
+
+func (r *NewRegistrar) AddTeacherenrollment(te TeacherEnrollment) {
+	r.teachermap = append(r.teachermap, te)
+}
+
 func (r *Registrar) AddStudent(s Student) {
 	r.students = append(r.students, s)
 }
@@ -34,6 +67,13 @@ func (r *Registrar) AddCourse(c Course) {
 func (r *Registrar) Enroll(e Enrollment) {
 	r.enrollments = append(r.enrollments, e)
 }
+
+
+func (r *NewRegistrar) Enrollnew(e EnrollNew) {
+	r.enroll = append(r.enroll, e)
+}
+
+
 
 func (r *Registrar) SetGrader(courseID int, g Grader) {
 	for i, e := range r.enrollments {

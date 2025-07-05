@@ -1,7 +1,9 @@
 package infrastructure
 
 import (
+	"bytes"
 	"encoding/csv"
+	"encoding/json"
 	"fmt"
 	"oops/main/internal"
 	"os"
@@ -28,6 +30,14 @@ func ExportTranscript(path string, list []internal.Enrollment) error {
 	}
 	return w.Error()
 }
+
+
+// func hello() {
+// 	var atRiskStudents []internal.AcademicRecord
+// 	fmt.Print(atRiskStudents)
+// }
+
+
 
 func ExportAtRiskStudents(path string, internal []internal.AcademicRecord) error {
 
@@ -78,4 +88,26 @@ func ExportSummaryReport(path string, internal []internal.AcademicRecord) error 
 	}
 
 	return nil
+}
+
+func ExportResultsAsJSON(results []internal.StudentResult) ([]byte, error) {
+	return json.MarshalIndent(results, "", "  ")
+}
+
+func ExportResultsAsCSV(results []internal.StudentResult) ([]byte, error) {
+	var buf bytes.Buffer
+	writer := csv.NewWriter(&buf)
+	writer.Write([]string{"course_id", "course_name", "student_id", "student_name", "score", "grade"})
+	for _, r := range results {
+		writer.Write([]string{
+			strconv.Itoa(r.CourseID),
+			r.CourseName,
+			strconv.Itoa(r.StudentID),
+			r.StudentName,
+			fmt.Sprintf("%.2f", r.Score),
+			r.Grade,
+		})
+	}
+	writer.Flush()
+	return buf.Bytes(), writer.Error()
 }
