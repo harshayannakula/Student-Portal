@@ -11,6 +11,7 @@ FILES=(
     "analytics1.go"
     "analytics3.go"
     "analytics2.go"
+    "main.go"
 )
 
 echo "🧪 Running tests and generating full coverage profile..."
