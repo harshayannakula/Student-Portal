@@ -36,5 +36,3 @@ func (ar *AcademicRecord) calculateCGPA() {
 		ar.CGPA = totalPoints / totalCredits
 	}
 }
-
-	

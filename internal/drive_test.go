@@ -416,7 +416,7 @@ func TestDrive_AppendApplication(t *testing.T) {
 		dr3.AppendApplication(nil)
 
 		apps := dr3.Applications()
-		if len(apps) > 0  {
+		if len(apps) > 0 {
 			t.Error("AppendApplication should not append nil application")
 		}
 	})

@@ -9,7 +9,6 @@ type Applicant struct {
 	AcademicRecord
 	drivesAppliedFor []*Drive
 	offersReceived   []*Drive
-
 }
 
 func NewApplicant(st Student, ar AcademicRecord) *Applicant {

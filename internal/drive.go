@@ -136,7 +136,7 @@ func (dr *Drive) SetJobCategory(jobCat JobCategory) {
 }
 
 func (dr *Drive) AppendApplication(application *Application) {
-	if application != nil{
+	if application != nil {
 		dr.applications = append(dr.applications, application)
 	}
 }
