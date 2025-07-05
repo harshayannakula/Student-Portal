@@ -1,9 +1,5 @@
 package internal
 
-import (
-	"fmt"
-)
-
 type Enrollment struct {
 	Student
 	Course
@@ -44,7 +40,9 @@ func Enroll(oe Enrollment, att Attendance, t Teacher, teachermap []Teacherenroll
 	return Enrollnew{}, false
 }
 
+/*
 func (e Enrollment) String() string {
 	r, _ := e.Grade(e)
 	return fmt.Sprintf("%s ->  %s : %s", e.Student.Name(), e.Course.Name, r)
 }
+*/
