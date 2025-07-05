@@ -2,14 +2,15 @@ package main
 
 import (
 	"fmt"
-	"Student-portal/internal"
-	"Student-portal/infrastructure"
+	"oops/main/infrastructure"
+	"oops/main/internal"
 	// "oops/main/internal/admin"
 )
 
 var courseResults []internal.CourseResult
 
 func main() {
+
 	regitrar := internal.Registrar{}
 
 	regitrar.LoadCourses()
@@ -17,7 +18,7 @@ func main() {
 
 	regitrar.LoadStudents()
 	regitrar.DisplayStudents()
-	
+
 	courseResults = infrastructure.LoadCourseResults()
 
 	fmt.Println("======================")
@@ -32,6 +33,4 @@ func main() {
 	// ts2.DisplayAttendance(102, 1002)
 	// fmt.Println()
 
-	
 }
-

@@ -4,10 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"Student-portal/internal"
+	"oops/main/internal"
 	"os"
 )
-
 
 type courseResultData struct {
 	StudentID  int     `json:"student_id"`
@@ -59,8 +58,9 @@ func LoadCourseResults() []internal.CourseResult {
 	}
 	return results
 }
+
 /*
-func (ar *AcademicRecordGenerator) GetAtRiskStudents() []internal.AcademicRecord { 
+func (ar *AcademicRecordGenerator) GetAtRiskStudents() []internal.AcademicRecord {
 	var atRisk []internal.AcademicRecord
 	for _, student := range ar.internal {
 		if student.Status == "At Risk" {

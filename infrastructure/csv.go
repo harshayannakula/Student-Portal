@@ -1,13 +1,13 @@
 package infrastructure
 
 import (
+	"bytes"
 	"encoding/csv"
+	"encoding/json"
 	"fmt"
-	"Student-portal/internal"
+	"oops/main/internal"
 	"os"
 	"strconv"
-	"encoding/json"
-    "bytes"
 )
 
 var deanListStudents []internal.AcademicRecord
@@ -88,24 +88,23 @@ func ExportSummaryReport(path string, internal []internal.AcademicRecord) error 
 }
 
 func ExportResultsAsJSON(results []internal.StudentResult) ([]byte, error) {
-    return json.MarshalIndent(results, "", "  ")
+	return json.MarshalIndent(results, "", "  ")
 }
 
-
 func ExportResultsAsCSV(results []internal.StudentResult) ([]byte, error) {
-    var buf bytes.Buffer
-    writer := csv.NewWriter(&buf)
-    writer.Write([]string{"course_id", "course_name", "student_id", "student_name", "score", "grade"})
-    for _, r := range results {
-        writer.Write([]string{
-            strconv.Itoa(r.CourseID),
-            r.CourseName,
-            strconv.Itoa(r.StudentID),
-            r.StudentName,
-            fmt.Sprintf("%.2f", r.Score),
-            r.Grade,
-        })
-    }
-    writer.Flush()
-    return buf.Bytes(), writer.Error()
+	var buf bytes.Buffer
+	writer := csv.NewWriter(&buf)
+	writer.Write([]string{"course_id", "course_name", "student_id", "student_name", "score", "grade"})
+	for _, r := range results {
+		writer.Write([]string{
+			strconv.Itoa(r.CourseID),
+			r.CourseName,
+			strconv.Itoa(r.StudentID),
+			r.StudentName,
+			fmt.Sprintf("%.2f", r.Score),
+			r.Grade,
+		})
+	}
+	writer.Flush()
+	return buf.Bytes(), writer.Error()
 }
