@@ -2,6 +2,7 @@ package internal
 
 import (
 	"encoding/json"
+	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"
 )
@@ -77,4 +78,55 @@ func TestExportGPAHistogramChart(t *testing.T) {
 	if info.Size() < 1000 {
 		t.Fatalf("Output file %s is too small Possibly Empty or Corrupt", outputFile)
 	}
+}
+func TestGetGPABucket(t *testing.T) {
+	tests := []struct {
+		gpa      float64
+		expected string
+	}{
+		{3.9, "<4"},
+		{4.5, "4–4.9"},
+		{5.5, "5–5.9"},
+		{6.5, "6–6.9"},
+		{7.5, "7–7.9"},
+		{8.5, "8–8.9"},
+		{9.1, "9–10"},
+	}
+
+	for _, tt := range tests {
+		if result := getGPABucket(tt.gpa); result != tt.expected {
+			t.Errorf("Expected %s, got %s for GPA %f", tt.expected, result, tt.gpa)
+		}
+	}
+}
+func TestExportGPAHistogramChart_Error(t *testing.T) {
+	hist := map[string]int{"6-6.9": 2}
+	// Intentionally giving bad path
+	err := ExportGPAHistogramChart(hist, "/badpath/gpa_chart.png")
+	if err == nil {
+		t.Errorf("Expected error for bad file path")
+	}
+}
+func TestGenerateGPAHistogramFromFiles_FileNotFound(t *testing.T) {
+	_, err := GenerateGPAHistogramFromFiles("nonexistent.json", "students.json")
+	if err == nil {
+		t.Errorf("Expected error for missing file, got nil")
+	}
+}
+
+func TestExportGPAHistogramChart_EmptyOrInvalidData(t *testing.T) {
+	err := ExportGPAHistogramChart(map[string]int{}, "invalid_chart.png")
+	if err != nil {
+		t.Errorf("Expected no error for empty chart, got: %v", err)
+	}
+}
+
+func TestExportGPAHistogramChart_EmptyBuckets(t *testing.T) {
+	hist := map[string]int{
+		"<4": 0, "4–4.9": 0, "5–5.9": 0, "6–6.9": 0, "7–7.9": 0, "8–8.9": 0, "9–10": 1,
+	}
+	err := ExportGPAHistogramChart(hist, "test_empty_gpa_chart.png")
+	assert.NoError(t, err)
+	defer os.Remove("test_empty_gpa_chart.png")
+	defer os.Remove("gpa_histogram.json")
 }

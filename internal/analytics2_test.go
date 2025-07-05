@@ -2,6 +2,7 @@ package internal
 
 import (
 	"encoding/json"
+	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"
 )
@@ -76,4 +77,27 @@ func checkFile(t *testing.T, filename string) {
 	if info.Size() == 0 {
 		t.Errorf("File %s is empty", filename)
 	}
+}
+func TestExportFilteredGPAChart_EmptyData(t *testing.T) {
+	err := exportFilteredGPAChart("testdata/empty_courseResults.json", "testdata/students.json", "out.png", func(gpa float64) bool {
+		return gpa > 9.5
+	}, "Empty Case")
+	if err == nil {
+		t.Errorf("Expected error for no data points, got nil")
+	}
+}
+func TestExportDeanListChart_InvalidFile(t *testing.T) {
+	err := ExportDeanListChart("nonexistent_course.json", "students.json", "output.png")
+	if err == nil {
+		t.Errorf("Expected error for invalid file path")
+	}
+}
+func TestExportDeanListChart_NoData(t *testing.T) {
+	// Use empty files to trigger "no data points" error
+	_ = os.WriteFile("empty.json", []byte("[]"), 0644)
+	defer os.Remove("empty.json")
+
+	err := ExportDeanListChart("empty.json", "empty.json", "should_fail.png")
+	assert.Error(t, err)
+	assert.Contains(t, err.Error(), "no data points")
 }
