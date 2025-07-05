@@ -14,20 +14,38 @@ type Registrar struct {
 }
 
 // NewRegistrar creates a new Registrar instance
-type NewRegistrar struct {
+type NewRegistrarS struct {
 	Registrar                      // Embedding Registrar to extend its functionality
 	teacher    []Teacher           // List of teachers
-	Teachermap []Teacherenrollment // list of Map of teachers with their courses
-	enroll     []Enrollnew         // List of enrollments (students with courses) with additional teacher and attendance information
+	Teachermap []TeacherEnrollment // list of Map of teachers with their courses
+	enroll     []EnrollNew         // List of enrollments (students with courses) with additional teacher and attendance information
+}
+
+type RegistrarWithDocs struct {
+	*NewRegistrarS
+	enrollWithDocs []EnrollnewWithDocs
+}
+
+func (r *RegistrarWithDocs) EnrollnewWithDocs(e EnrollnewWithDocs) {
+	r.enrollWithDocs = append(r.enrollWithDocs, e)
+}
+
+func (r *RegistrarWithDocs) DisplayDocuments() {
+	for _, e := range r.enrollWithDocs {
+		fmt.Printf("Student: %s (ID %d)\n", e.Student.Name(), e.Student.ID())
+		for _, doc := range e.Documents {
+			fmt.Printf(" - %s (%s)\n", doc.Title, doc.Filename)
+		}
+	}
 }
 
 // function to adppend teacher into register
-func (r *NewRegistrar) AddTeacher(t Teacher) {
+func (r *NewRegistrarS) AddTeacher(t Teacher) {
 	r.teacher = append(r.teacher, t)
 }
 
 // function to add teacher with course in teacher map
-func (r *NewRegistrar) AddTeacherenrollment(te Teacherenrollment) {
+func (r *NewRegistrarS) AddTeacherenrollment(te TeacherEnrollment) {
 	r.Teachermap = append(r.Teachermap, te)
 }
 
@@ -46,8 +64,12 @@ func (r *Registrar) Enroll(e Enrollment) {
 	r.enrollments = append(r.enrollments, e)
 }
 
+func (r *NewRegistrarS) Enrollnew(e EnrollNew) {
+	r.enroll = append(r.enroll, e)
+}
+
 // new variable to maintain enrollments with additional information like teacher and attendance
-func (r *NewRegistrar) AddEnrollnew(e Enrollnew) {
+func (r *NewRegistrarS) AddEnrollnew(e EnrollNew) {
 	r.enroll = append(r.enroll, e)
 }
 
@@ -105,6 +127,7 @@ func (r *Registrar) LoadStudents() {
 		student := NewStudent(sd.ID, sd.Name)
 		r.AddStudent(student)
 	}
+
 }
 
 func (r *Registrar) DisplayStudents() {
@@ -114,7 +137,8 @@ func (r *Registrar) DisplayStudents() {
 }
 
 func (r *Registrar) DisplayCourses() {
+	log.Println("Courses...")
 	for _, cr := range r.courses {
-		fmt.Printf("#%d : %s\n", cr.Id, cr.Name)
+		log.Printf("#%d : %s\n", cr.Id, cr.Name)
 	}
 }

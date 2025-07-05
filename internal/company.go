@@ -10,6 +10,7 @@ type Company struct {
 
 func NewCompany(name string) *Company {
 	return &Company{id: newID(), name: name, drives: make([]*Drive, 0)}
+
 }
 
 func (c *Company) ID() int {

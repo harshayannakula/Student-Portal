@@ -1,0 +1,302 @@
+[
+  {
+    "CompanyName": "DeltaSystems",
+    "PackageLPA": 14.9,
+    "NumStudents": 7,
+    "JobTitle": "System Architect"
+  },
+  {
+    "CompanyName": "InnovateX",
+    "PackageLPA": 8.2,
+    "NumStudents": 5,
+    "JobTitle": "Product Manager"
+  },
+  {
+    "CompanyName": "BizSoft",
+    "PackageLPA": 7.5,
+    "NumStudents": 9,
+    "JobTitle": "Network Engineer"
+  },
+  {
+    "CompanyName": "InnovateX",
+    "PackageLPA": 24.3,
+    "NumStudents": 2,
+    "JobTitle": "Data Analyst"
+  },
+  {
+    "CompanyName": "InnovateX",
+    "PackageLPA": 22.5,
+    "NumStudents": 5,
+    "JobTitle": "Product Manager"
+  },
+  {
+    "CompanyName": "AlphaSolutions",
+    "PackageLPA": 7.1,
+    "NumStudents": 10,
+    "JobTitle": "Security Analyst"
+  },
+  {
+    "CompanyName": "AlphaSolutions",
+    "PackageLPA": 22.9,
+    "NumStudents": 5,
+    "JobTitle": "Data Analyst"
+  },
+  {
+    "CompanyName": "AlphaSolutions",
+    "PackageLPA": 14.4,
+    "NumStudents": 10,
+    "JobTitle": "Network Engineer"
+  },
+  {
+    "CompanyName": "InnovateX",
+    "PackageLPA": 15.9,
+    "NumStudents": 1,
+    "JobTitle": "Security Analyst"
+  },
+  {
+    "CompanyName": "DeltaSystems",
+    "PackageLPA": 16.8,
+    "NumStudents": 7,
+    "JobTitle": "DevOps Engineer"
+  },
+  {
+    "CompanyName": "BizSoft",
+    "PackageLPA": 9.5,
+    "NumStudents": 7,
+    "JobTitle": "System Architect"
+  },
+  {
+    "CompanyName": "AlphaSolutions",
+    "PackageLPA": 21.4,
+    "NumStudents": 6,
+    "JobTitle": "Software Engineer"
+  },
+  {
+    "CompanyName": "DataMinds",
+    "PackageLPA": 22.7,
+    "NumStudents": 5,
+    "JobTitle": "Business Analyst"
+  },
+  {
+    "CompanyName": "HealthPlus",
+    "PackageLPA": 23.7,
+    "NumStudents": 1,
+    "JobTitle": "Data Analyst"
+  },
+  {
+    "CompanyName": "InnovateX",
+    "PackageLPA": 10.4,
+    "NumStudents": 10,
+    "JobTitle": "Network Engineer"
+  },
+  {
+    "CompanyName": "FinServe",
+    "PackageLPA": 24.2,
+    "NumStudents": 4,
+    "JobTitle": "System Architect"
+  },
+  {
+    "CompanyName": "DataMinds",
+    "PackageLPA": 16.1,
+    "NumStudents": 5,
+    "JobTitle": "System Architect"
+  },
+  {
+    "CompanyName": "AlphaSolutions",
+    "PackageLPA": 16.3,
+    "NumStudents": 4,
+    "JobTitle": "Network Engineer"
+  },
+  {
+    "CompanyName": "DeltaSystems",
+    "PackageLPA": 10.8,
+    "NumStudents": 5,
+    "JobTitle": "Software Engineer"
+  },
+  {
+    "CompanyName": "DataMinds",
+    "PackageLPA": 13.2,
+    "NumStudents": 5,
+    "JobTitle": "Network Engineer"
+  },
+  {
+    "CompanyName": "BetaTech",
+    "PackageLPA": 23.0,
+    "NumStudents": 8,
+    "JobTitle": "System Architect"
+  },
+  {
+    "CompanyName": "HealthPlus",
+    "PackageLPA": 10.9,
+    "NumStudents": 2,
+    "JobTitle": "Product Manager"
+  },
+  {
+    "CompanyName": "DataMinds",
+    "PackageLPA": 22.9,
+    "NumStudents": 5,
+    "JobTitle": "Business Analyst"
+  },
+  {
+    "CompanyName": "BetaTech",
+    "PackageLPA": 10.5,
+    "NumStudents": 2,
+    "JobTitle": "Business Analyst"
+  },
+  {
+    "CompanyName": "DeltaSystems",
+    "PackageLPA": 15.8,
+    "NumStudents": 9,
+    "JobTitle": "Security Analyst"
+  },
+  {
+    "CompanyName": "InnovateX",
+    "PackageLPA": 11.3,
+    "NumStudents": 6,
+    "JobTitle": "Security Analyst"
+  },
+  {
+    "CompanyName": "TechCorp",
+    "PackageLPA": 10.1,
+    "NumStudents": 1,
+    "JobTitle": "Data Scientist"
+  },
+  {
+    "CompanyName": "FinServe",
+    "PackageLPA": 14.1,
+    "NumStudents": 4,
+    "JobTitle": "QA Engineer"
+  },
+  {
+    "CompanyName": "TechCorp",
+    "PackageLPA": 20.5,
+    "NumStudents": 4,
+    "JobTitle": "QA Engineer"
+  },
+  {
+    "CompanyName": "DeltaSystems",
+    "PackageLPA": 22.0,
+    "NumStudents": 5,
+    "JobTitle": "Security Analyst"
+  },
+  {
+    "CompanyName": "InnovateX",
+    "PackageLPA": 10.0,
+    "NumStudents": 2,
+    "JobTitle": "Software Engineer"
+  },
+  {
+    "CompanyName": "BizSoft",
+    "PackageLPA": 22.8,
+    "NumStudents": 7,
+    "JobTitle": "Data Analyst"
+  },
+  {
+    "CompanyName": "GammaEnterprises",
+    "PackageLPA": 14.1,
+    "NumStudents": 9,
+    "JobTitle": "System Architect"
+  },
+  {
+    "CompanyName": "FinServe",
+    "PackageLPA": 21.5,
+    "NumStudents": 8,
+    "JobTitle": "System Architect"
+  },
+  {
+    "CompanyName": "DeltaSystems",
+    "PackageLPA": 17.8,
+    "NumStudents": 9,
+    "JobTitle": "Business Analyst"
+  },
+  {
+    "CompanyName": "TechCorp",
+    "PackageLPA": 19.0,
+    "NumStudents": 3,
+    "JobTitle": "Product Manager"
+  },
+  {
+    "CompanyName": "BetaTech",
+    "PackageLPA": 10.4,
+    "NumStudents": 2,
+    "JobTitle": "Security Analyst"
+  },
+  {
+    "CompanyName": "AlphaSolutions",
+    "PackageLPA": 19.1,
+    "NumStudents": 10,
+    "JobTitle": "Business Analyst"
+  },
+  {
+    "CompanyName": "GammaEnterprises",
+    "PackageLPA": 11.7,
+    "NumStudents": 5,
+    "JobTitle": "Product Manager"
+  },
+  {
+    "CompanyName": "DataMinds",
+    "PackageLPA": 21.8,
+    "NumStudents": 9,
+    "JobTitle": "QA Engineer"
+  },
+  {
+    "CompanyName": "BetaTech",
+    "PackageLPA": 7.7,
+    "NumStudents": 5,
+    "JobTitle": "Data Analyst"
+  },
+  {
+    "CompanyName": "InnovateX",
+    "PackageLPA": 23.1,
+    "NumStudents": 3,
+    "JobTitle": "Network Engineer"
+  },
+  {
+    "CompanyName": "HealthPlus",
+    "PackageLPA": 13.7,
+    "NumStudents": 1,
+    "JobTitle": "Software Engineer"
+  },
+  {
+    "CompanyName": "HealthPlus",
+    "PackageLPA": 16.5,
+    "NumStudents": 3,
+    "JobTitle": "Data Scientist"
+  },
+  {
+    "CompanyName": "DataMinds",
+    "PackageLPA": 20.8,
+    "NumStudents": 7,
+    "JobTitle": "Security Analyst"
+  },
+  {
+    "CompanyName": "HealthPlus",
+    "PackageLPA": 15.0,
+    "NumStudents": 2,
+    "JobTitle": "QA Engineer"
+  },
+  {
+    "CompanyName": "BetaTech",
+    "PackageLPA": 20.3,
+    "NumStudents": 7,
+    "JobTitle": "DevOps Engineer"
+  },
+  {
+    "CompanyName": "BizSoft",
+    "PackageLPA": 7.5,
+    "NumStudents": 10,
+    "JobTitle": "Business Analyst"
+  },
+  {
+    "CompanyName": "AlphaSolutions",
+    "PackageLPA": 19.1,
+    "NumStudents": 1,
+    "JobTitle": "System Architect"
+  },
+  {
+    "CompanyName": "TechCorp",
+    "PackageLPA": 11.1,
+    "NumStudents": 4,
+    "JobTitle": "Network Engineer"
+  }
+]

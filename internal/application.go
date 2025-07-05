@@ -11,7 +11,7 @@ const (
 )
 
 type Application struct {
-	id int
+	id      int
 	driveId int
 	*Applicant
 	status ApplicationStatus
