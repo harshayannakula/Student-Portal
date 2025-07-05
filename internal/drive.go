@@ -5,8 +5,10 @@ import (
 	"time"
 )
 
+// Automatically generated ID generator
 var nextID = SeqID()
 
+// Enum for job category
 type JobCategory int
 
 const (
@@ -16,6 +18,7 @@ const (
 	Marquee
 )
 
+// Map for job category string representation
 var JobCategoryStringMap = map[JobCategory]string{
 	Day:        "Day Company",
 	Dream:      "Dream",
@@ -23,14 +26,21 @@ var JobCategoryStringMap = map[JobCategory]string{
 	Marquee:    "Marquee",
 }
 
+// String method for enum
 func (jc JobCategory) String() string {
 	return JobCategoryStringMap[jc]
 }
 
+// Eligibility struct
 type Eligibility struct {
 	requirement float64
 }
 
+// func (el Eligibility) checkEligibility(applicant *Applicant) bool {
+// 	panic("unimplemented")
+// }
+
+// Drive struct
 type Drive struct {
 	id           int
 	startDate    time.Time
@@ -41,6 +51,8 @@ type Drive struct {
 	jobCategory  JobCategory
 	applications []*Application
 }
+
+// --- Constructor Functions ---
 
 func NewEligibility(minimumGPA float64) *Eligibility {
 	return &Eligibility{requirement: minimumGPA}
@@ -59,7 +71,12 @@ func (el *Eligibility) ChangeRequirement(newReq float64) {
 	el.requirement = newReq
 }
 
-// Getters
+func (el *Eligibility) CheckEligibility(applicant *Applicant) bool {
+	return applicant.CGPA >= el.requirement
+}
+
+// --- Drive Getters ---
+
 func (dr Drive) ID() int {
 	return dr.id
 }
@@ -92,7 +109,8 @@ func (dr Drive) Applications() []*Application {
 	return dr.applications
 }
 
-// Setters
+// --- Drive Setters ---
+
 func (dr *Drive) SetStartDate(startDate time.Time) {
 	dr.startDate = startDate
 }
@@ -118,13 +136,16 @@ func (dr *Drive) SetJobCategory(jobCat JobCategory) {
 }
 
 func (dr *Drive) AppendApplication(application *Application) {
-	dr.applications = append(dr.applications, application)
+	if application != nil{
+		dr.applications = append(dr.applications, application)
+	}
 }
 
-// Drive Functions
-func (dr *Drive) HasApplied(StudentID int) bool {
+// --- Drive Functional Methods ---
+
+func (dr *Drive) HasApplied(studentID int) bool {
 	for _, e := range dr.applications {
-		if e.Student.ID() == StudentID {
+		if e.Student.ID() == studentID {
 			return true
 		}
 	}
@@ -140,9 +161,9 @@ func (dr *Drive) GetApplicationByID(id int) (*Application, error) {
 	return nil, fmt.Errorf("no such application for given id")
 }
 
-func (dr *Drive) getSelectedApplications() []*Application{
+func (dr *Drive) getSelectedApplications() []*Application {
 	var arr []*Application
-	for _, app := range dr.Applications(){
+	for _, app := range dr.Applications() {
 		if app.Status() == Selected {
 			arr = append(arr, app)
 		}
@@ -150,10 +171,10 @@ func (dr *Drive) getSelectedApplications() []*Application{
 	return arr
 }
 
-func (dr *Drive) getShortlistedApplications() []*Application{
+func (dr *Drive) getShortlistedApplications() []*Application {
 	var arr []*Application
-	for _, app := range dr.Applications(){
-		if app.Status() ==  ShortListed {
+	for _, app := range dr.Applications() {
+		if app.Status() == ShortListed {
 			arr = append(arr, app)
 		}
 	}
@@ -162,7 +183,7 @@ func (dr *Drive) getShortlistedApplications() []*Application{
 
 // Elegibility functions
 func (el *Eligibility) checkEligibility(applicant *Applicant) bool {
-	if el.requirement > applicant.CGPA {
+	if el.requirement >= applicant.CGPA {
 		return false
 	} else {
 		return true

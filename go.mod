@@ -2,6 +2,7 @@ module oops/main
 
 go 1.24.4
 
+
 require (
 	github.com/stretchr/testify v1.10.0
 	gonum.org/v1/plot v0.16.0
@@ -21,3 +22,4 @@ require (
 	golang.org/x/text v0.23.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+

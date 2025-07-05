@@ -50,8 +50,10 @@ func NewSemesterResult(studentId, semester int) *SemesterResult {
 func (pr *SemesterResult) SetSemester(sem int) error {
 	if pr.Semester == 0 {
 		pr.Semester = sem
+		return nil
 	}
-	return errors.New("cant change already set semester")
+
+	return errors.New("cannot change an already set semester")
 }
 
 func (sr *SemesterResult) AddCourseResult(result CourseResult) {
