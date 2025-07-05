@@ -1,1 +1,4 @@
+scripts/
+coverage.out
+placement_coverage.html
 student_analytics_coverage.sh
